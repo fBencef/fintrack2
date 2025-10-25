@@ -2,11 +2,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinTrack OE</title>
+    <title>FinTrack OE | Expenses</title>
 </head>
 <body>
     <h1>FinTrack OE</h1>
-    Hello Academic World! <br>
-    Testing git.
+    <h2>Expenses</h2>
 </body>
 </html>
