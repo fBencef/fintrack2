@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id('category_id');
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->constrained('users','user_id')->onDelete('cascade');
             $table->string('category_name');
-            $table->string('category_description');
-            $table->string('category_direction',1);
-            $table->boolean('category_is_active');
+            $table->string('category_description')->nullable();
+            $table->enum('category_direction',['-','+','/'])->default('-');
+            $table->boolean('category_is_active')->default(true);
             $table->timestamps();
         });
     }

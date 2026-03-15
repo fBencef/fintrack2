@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('debt_statuses', function (Blueprint $table) {
             $table->id("debt_status_id");
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->constrained('users','user_id')->onDelete('cascade');
             $table->string('debt_status_name');
             $table->string('debt_status_color',7);
-            $table->boolean('is_delay');
+            $table->boolean('is_delay')->default(false);
             $table->timestamps();
         });
     }

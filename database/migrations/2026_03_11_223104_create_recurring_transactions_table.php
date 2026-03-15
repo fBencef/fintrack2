@@ -13,21 +13,21 @@ return new class extends Migration
     {
         Schema::create('recurring_transactions', function (Blueprint $table) {
             $table->id('recurring_id');
-            $table->foreignId('user_id');
-            $table->foreignId('currency_id');
-            $table->foreignId('category_id');
-            $table->foreignId('subcategory_id');
-            $table->foreignId('account_id');
+            $table->foreignId('user_id')->constrained('users','user_id')->onDelete('cascade');
+            $table->foreignId('currency_id')->constrained('currencies','currency_id')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories','category_id')->onDelete('cascade');
+            $table->foreignId('subcategory_id')->constrained('subcategories','subcategory_id')->onDelete('cascade');
+            $table->foreignId('account_id')->constrained('accounts','account_id')->onDelete('cascade');
             $table->string('recurring_name');
-            $table->string('recurring_description');
-            $table->float('recurring_amount');
+            $table->string('recurring_description')->nullable();
+            $table->decimal('recurring_amount',15,2);
             $table->date('recurring_start_date');
-            $table->date('recurring_end_date');
+            $table->date('recurring_end_date')->nullable();
             $table->string('frequency_type');
             $table->integer('frequency_intervall');
-            $table->integer('day_of_recurrence');
+            $table->integer('day_of_recurrence')->nullable();
             $table->date('next_exection_date');
-            $table->boolean('recurring_is_active');
+            $table->boolean('recurring_is_active')->default(true);
             $table->boolean('recurring_is_prediction');
             $table->timestamps();
         });

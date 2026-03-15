@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
+    const DIRECTION_INCOME = '+';
+    const DIRECTION_EXPENSE = '-';
+    const DIRECTION_ANY = '/';
+
     protected $primaryKey = 'category_id';
 
     protected $fillable = [

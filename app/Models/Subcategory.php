@@ -16,6 +16,7 @@ class Subcategory extends Model
         'category_id',
         'subcategory_name',
         'subcategory_description',
+        'subcategory_direction',
         'subcategory_is_active'
     ]
 

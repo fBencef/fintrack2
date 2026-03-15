@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('subcategories', function (Blueprint $table) {
             $table->id('subcategory_id');
-            $table->foreignId('user_id');
-            $table->foreignId('category_id');
+            $table->foreignId('user_id')->constrained('users','user_id')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories','category_id')->onDelete('cascade');
             $table->string('subcategory_name');
-            $table->string('subcategory_description');
-            $table->boolean('subcategory_is_active');
+            $table->string('subcategory_description')->nullable();
+            $table->enum('subcategory_direction',['-','+','/'])->default('-');
+            $table->boolean('subcategory_is_active')->default(true);
             $table->timestamps();
         });
     }

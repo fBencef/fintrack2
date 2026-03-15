@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('partners', function (Blueprint $table) {
             $table->id('partner_id');
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->constrained('users','user_id')->onDelete('cascade');
             $table->string('partner_name');
-            $table->string('partner_description');
-            $table->boolean('partner_is_active');
+            $table->string('partner_description')->nullable();
+            $table->boolean('partner_is_active')->default(true);
             $table->timestamps();
         });
     }
