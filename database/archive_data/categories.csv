@@ -1,0 +1,20 @@
+﻿"category_id","category_name","category_description","category_direction"
+1,Munka,,+
+2,Otthoni,,+
+3,Szerencsejáték,,/
+4,Eladások,,+
+5,Jóváírások,,+
+6,Ajándék / Bónusz,,+
+7,Szolgáltatások,,-
+8,Közösségi közlekedés,,-
+9,Carsharing,,-
+10,Autó,,-
+11,Hobbi / Magamra,,-
+12,Étkezés,,-
+13,Szabadidő,,-
+14,Ajándék / Másnak,,-
+15,Egyéb,,/
+16,Képzés,,-
+18,Ösztöndíj,,+
+19,Lakás,,-
+20,Buszvezetés,,-

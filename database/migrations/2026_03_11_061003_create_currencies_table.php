@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('currencies', function (Blueprint $table) {
             $table->id('currency_id');
             $table->foreignId('user_id')->constrained('users','user_id')->onDelete('cascade');
-            $table->string('curency_name');
-            $table->string('currency_sign', 1)->nullable();
+            $table->string('currency_name');
+            $table->string('currency_sign');
             $table->string('currency_abbreviation', 3);
             $table->boolean('is_default_currency');
             $table->timestamps(); // Adds created_at and updated_at automatically

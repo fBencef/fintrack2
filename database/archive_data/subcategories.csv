@@ -1,0 +1,54 @@
+﻿"subcategory_id","category_id","subcategory_name","subcategory_description"
+1,1,E.ON,""
+2,1,Diákmunka,Diákszövetkezeteken keresztüli alkalmi munkák
+3,1,Street Crowd,""
+5,5,MOHU,""
+6,5,OTP kedvezményprogram,""
+12,7,Telekom,Személyes lakossági Telekom előfizetés
+13,7,menetrend.app,Prémium előfizetés
+14,7,MEGA,Felhőtárhely előfizetés
+15,7,Obsidian,""
+17,8,BKK,""
+18,8,MÁV csoport,""
+19,8,MOL BUBI,""
+20,9,GreenGo,""
+21,9,Wigo,""
+22,9,MOL Limo,""
+27,10,Tankolás,""
+28,10,Parkolás,""
+29,10,Mosás,""
+30,10,Felszerelés,"Folyadékok; kicsi, könnyen cserélhető alkatrészek"
+31,8,Egyéb közösségi közlekedés,Más (pl. vidéki) szolgáltatók
+32,12,Élelmiszerbolt,"Főleg nasik, vagy készételek"
+33,12,Vendéglátó hely,""
+34,13,Mozi,""
+35,13,Szállás,""
+36,13,Belépőjegy,"kiállítások, strandok, stb."
+37,13,Italozás,"kocsma, bár, utcai alkoholizálás, stb."
+38,16,Vezetői engedély,""
+39,16,Egyetem,""
+40,16,"Tanfolyamok, tréningek",""
+41,7,Disney+,""
+42,7,Google tárhely,""
+43,10,Karbantartás,"Szervizelés. vizsgáztatás, stb."
+44,1,ArrivaBus,""
+45,7,OTP Bázis számla,A számlával kapcsolatos díjak
+46,13,Előadás,""
+47,13,Koncert, 
+48,11,Szoftver,Játék vagy egyéb one-time purchase szoftver
+49,11,LEGO, 
+50,11,Lakberendezés,"Bútorok, használati tárgyak"
+51,11,Gyógyszer / Drogéria,"gyógyszerek, vitaminok, szépségápolási termékek"
+52,11,"Ruházat, kiegészítők", 
+53,11,Elektronikai eszköz, 
+54,11,Könyv, 
+55,11,CD, 
+56,7,Overleaf, 
+58,19,Felújítás, 
+59,19,Bútor, 
+60,19,"Felszerelés, eszközök", 
+61,19,"Kiegészítők, dekorok", 
+62,10,Útdíjak, 
+63,20,"Felszerelés, eszközök (busz)",tisztítószerek és egyebek
+64,7,Erste Egyszámla, 
+65,7,Alza+, 

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Account extends Model
 {
-    protected $primaryKey = 'account_id'
+    protected $primaryKey = 'account_id';
 
     protected $fillable = [
         'account_id',
@@ -16,7 +16,7 @@ class Account extends Model
         'currency_id',
         'account_name',
         'account_is_active'
-    ]
+    ];
 
     // Referenced by this
     public function user(): BelongsTo

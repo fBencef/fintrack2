@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users','user_id')->onDelete('cascade');
             $table->foreignId('currency_id')->constrained('currencies','currency_id')->onDelete('cascade');
             $table->string('account_name');
-            $table->boolean('account_is_active')->default(true);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
