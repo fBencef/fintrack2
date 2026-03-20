@@ -10,7 +10,7 @@ class Transaction extends Model
     protected $primaryKey='transaction_id';
 
     protected $fillable= [
-    'transcation_id',
+    'transaction_id',
     'user_id',
     'currency_id',
     'category_id',
@@ -21,7 +21,7 @@ class Transaction extends Model
     'transaction_split_amount',
     'transaction_date_completed',
     'transaction_description'
-    ]
+    ];
 
 
     // Referenced by this

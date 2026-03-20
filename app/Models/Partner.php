@@ -16,7 +16,7 @@ class Partner extends Model
         'partner_name',
         'partner_description',
         'partner_is_active'
-    ]
+    ];
 
     //Referenced by this
     public function user(): BelongsTo

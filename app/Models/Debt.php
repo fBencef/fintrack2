@@ -19,7 +19,7 @@ class Debt extends Model
         'debt_date_completed',
         'debt_deadline',
         'debt_description',
-    ]
+    ];
 
     //Referenced by this
     public function user(): BelongsTo

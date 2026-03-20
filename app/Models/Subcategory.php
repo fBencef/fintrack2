@@ -18,7 +18,7 @@ class Subcategory extends Model
         'subcategory_description',
         'subcategory_direction',
         'subcategory_is_active'
-    ]
+    ];
 
     // Table referenced by this one
     

@@ -16,7 +16,7 @@ class DebtStatus extends Model
         'debt_status_name',
         'debt_status_color',
         'is_delay'
-    ]
+    ];
 
     //Referenced by this
     public function user(): BelongsTo
