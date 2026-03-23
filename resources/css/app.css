@@ -9,3 +9,32 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* Container for the links */
+.pagination-wrapper nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Style the actual SVG arrows and numbers */
+.pagination-wrapper svg {
+    width: 20px;
+    height: 20px;
+}
+
+.pagination-wrapper a, 
+.pagination-wrapper span {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    margin: 0 2px;
+    text-decoration: none;
+    color: #333;
+    border-radius: 4px;
+}
+
+.pagination-wrapper .active {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+}
