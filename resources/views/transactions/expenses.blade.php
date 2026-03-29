@@ -29,7 +29,7 @@
                     <td>
                         <details>
                             <summary>
-                                {{ $categoryName }} ({{ count($data['subs']) }})
+                                {{ $categoryName }} @php echo count($data['subs']) > 0 ? '('.count($data['subs']).')' : ''; @endphp
                             </summary>
                         </details>
                     </td>
@@ -38,17 +38,17 @@
                         <!--TODO: replace ' Ft' with dynamic currency sign?-->
                         <td> {{ $data['total'][$month] > 0 ? number_format($data['total'][$month], 0, ',', ' ') . ' Ft' : '-' }} </td>
                     @endforeach
-                    <td class="total-col">{{ number_format($total, 0, ',', ' ') }} Ft</td>
+                    <td class="total-col">{{ number_format($categoryTotalYear, 0, ',', ' ') }} Ft</td>
                 </tr>
 
                 <!-- Subcategory rows hidden until category is expanded) -->
                 @foreach($data['subs'] as $subName => $subMonths)
                     <tr class="subcategory-row">
                         <td style="padding-left: 30px;">{{ $subName }}</td>
-                        @foreach($months as $m)
-                            <td>{{ $subMonths[$m] > 0 ? number_format($subMonths[$m], 0, ',', ' ') . ' Ft' : '-' }}</td>
-                            <td class="total-col">{{ number_format(array_sum($subMonths), 0, ',', ' ') }} Ft</td>
+                        @foreach($months as $month)
+                            <td>{{ $subMonths[$month] > 0 ? number_format($subMonths[$month], 0, ',', ' ') . ' Ft' : '-' }}</td>
                         @endforeach
+                        <td class="total-col">{{ number_format(array_sum($subMonths), 0, ',', ' ') }} Ft</td>
                 @endforeach
             @endforeach
         </tbody>

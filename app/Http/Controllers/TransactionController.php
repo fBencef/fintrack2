@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\isNull;
 
 class TransactionController extends Controller
 {
@@ -60,8 +61,12 @@ class TransactionController extends Controller
     public function expenses() {
         // Fetch only expense transactions with their relationships
         $transactions = Transaction::whereHas('category', function ($q) {
-            $q->where('category_direction','-');
-        })->with(['category','subcategory'])->get();
+            $q->whereNot('category_direction','+');
+        })
+        ->whereYear('transaction_date_completed',2025)
+        ->where('transaction_amount','<',0)
+        ->with(['category','subcategory'])
+        ->get();
 
         $pivotData = [];
         //TODO: remove hard-coding from this part
@@ -73,23 +78,31 @@ class TransactionController extends Controller
             $monthName = $months[$monthNumber];
 
             $categoryName = $transaction->category->category_name;
-            $subcategoryName = $transaction->subcategory?->subcategory_name ?? 'Egyéb';
+            $subcategoryName = $transaction->subcategory?->subcategory_name ?? null;
+            //TODO: Not the correct way of displaying these. Egyéb should not be a placeholder for empty subcat, since then it is just the main category itself.
 
             // Initialize nested arrays if not set
             if (!isset($pivotData[$categoryName])) {
                 $pivotData[$categoryName] = ['total' => array_fill_keys($months, 0), 'subs' => []];
             }
-            if (!isset($pivotData[$categoryName]['subs'][$subcategoryName])) {
-                $pivotData[$categoryName]['subs'][$subcategoryName] = array_fill_keys($months, 0);
+            if($subcategoryName) {
+                if (!isset($pivotData[$categoryName]['subs'][$subcategoryName])) {
+                    $pivotData[$categoryName]['subs'][$subcategoryName] = array_fill_keys($months, 0);
+                }
             }
 
             // Add to the specific subcategory month
-            $pivotData[$categoryName]['subs'][$subcategoryName][$monthName] += $transaction->transaction_amount;
+            if($subcategoryName) {
+                $pivotData[$categoryName]['subs'][$subcategoryName][$monthName] += $transaction->transaction_amount * -1;
+            }
 
             // Add to the main category total for that month
-            $pivotData[$categoryName]['total'][$monthName] += $transaction->transaction_amount;
+            $pivotData[$categoryName]['total'][$monthName] += $transaction->transaction_amount * -1;
         }
 
+        //DEBUG TOOL - Stops the app and shows the data
+        //dd($pivotData['Szolgáltatások']);
+        
         return view('transactions.expenses', compact('pivotData','months'));
     }
 }
