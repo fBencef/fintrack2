@@ -10,6 +10,25 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
+:root {
+    --FrontColor: #fdfdfd;
+    --BackColor: #eaeaea;
+    --AccentItemColor: #8fcd8f;
+    --AccentFontColor: #208d4e;
+    --AccentSecondaryColor: #409262;
+    --BorderColor: #adadad;
+
+    --tableMainColor: #f7f7f7;
+    --tableSecondaryColor: #dfdfdf;
+    --tableHeaderColor: #8fcd8f; /*Same as Accent Item Color*/
+    --tableFooterColor: #bebebe;
+    --tableHoverColor: #ace6ac;
+    --tableBorderColor: #8f8f8f;
+
+    --tableRowIncomeColor: #94e49486;
+    --tableRowExpenseColor: #fc646486;
+}
+
 /* Container for the links */
 .pagination-wrapper nav {
     display: flex;
@@ -37,4 +56,67 @@
     background-color: #3498db;
     color: white;
     border-color: #3498db;
+}
+
+/* Summary Table */
+
+.table-container {
+    padding: 7px;
+    background-color: var(--FrontColor);
+    border-radius: 5px;
+    width: fit-content;
+    box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+}
+
+table.summary-table, th, td {
+    border: 1px solid var(--tableBorderColor);
+    border-collapse: collapse;
+}
+
+tr.summary-table-main-category {
+    background-color: var(--tableMainColor);
+    font-weight: 600;
+    padding: 20px;
+    transition: background-color 0.3s ease;
+}
+
+tr.summary-table-subcategory {
+    background-color: var(--tableSecondaryColor);
+    display: none;
+    transition: background-color 0.3s ease;
+}
+
+tr.summary-table-main-category:hover, tr.summary-table-subcategory:hover {
+    background-color: var(--tableHoverColor);
+    border: solid 2px var(--AccentSecondaryColor)
+}
+
+
+tr.summary-table-header {
+    background-color: var(--tableHeaderColor);
+    color: #faf9f9;
+    font-weight: bold;
+}
+
+tr.month-sum {
+    background-color: var(--tableFooterColor);
+    font-weight: bold;
+}
+
+td.summary-table-year-sum-main {
+    background-color: var(--tableFooterColor);
+    font-weight: bold;
+    color: #000;
+}
+
+tr, th, td {
+    padding: 5px;
+}
+
+a.table-expand {
+    cursor: pointer;
+    user-select: none;
+}
+.summary-table-header {
+    text-align: center;
 }
