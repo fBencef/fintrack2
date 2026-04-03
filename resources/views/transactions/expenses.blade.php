@@ -5,6 +5,16 @@
     <h2>Expenses</h2>
 
     <div class="table-container">
+    
+    <div class="year-selector">
+    @foreach($existingYears as $year)
+        <a href="{{ route('transactions.expenses', ['year' => $year]) }}" 
+           class="year-btn {{ $selectedYear == $year ? 'active' : '' }}">
+            {{ $year }}
+        </a>
+    @endforeach
+    </div>
+    
     <table class="summary-table">
         <thead>
             <tr class="summary-table-header">

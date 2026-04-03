@@ -58,12 +58,22 @@ class TransactionController extends Controller
         return view('transactions.all', compact('transactions', 'categories','subcategories'));
     }
 
-    public function expenses() {
+    public function expenses(Request $request) {
+        // Get all existing years from transactions (for year selector)
+        $existingYears = Transaction::selectRaw('YEAR(transaction_date_completed) as year')
+            ->distinct()
+            ->orderBy('year')
+            ->pluck('year');
+
+        // Get selected year from URL
+        // Default is newest
+        $selectedYear = $request->get('year', $existingYears->first() ?? date('Y'));
+    
         // Fetch only expense transactions with their relationships
         $transactions = Transaction::whereHas('category', function ($q) {
             $q->whereNot('category_direction','+');
         })
-        ->whereYear('transaction_date_completed',2025)
+        ->whereYear('transaction_date_completed', $selectedYear)
         ->where('transaction_amount','<',0)
         ->with(['category','subcategory'])
         ->get();
@@ -103,6 +113,6 @@ class TransactionController extends Controller
         //DEBUG TOOL - Stops the app and shows the data
         //dd($pivotData['Szolgáltatások']);
         
-        return view('transactions.expenses', compact('pivotData','months'));
+        return view('transactions.expenses', compact('pivotData','months','existingYears', 'selectedYear'));
     }
 }
