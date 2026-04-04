@@ -89,7 +89,6 @@ class TransactionController extends Controller
 
             $categoryName = $transaction->category->category_name;
             $subcategoryName = $transaction->subcategory?->subcategory_name ?? null;
-            //TODO: Not the correct way of displaying these. Egyéb should not be a placeholder for empty subcat, since then it is just the main category itself.
 
             // Initialize nested arrays if not set
             if (!isset($pivotData[$categoryName])) {
@@ -117,6 +116,63 @@ class TransactionController extends Controller
         $latestExpenses = $this->latest_transactions(5, true);
         
         return view('transactions.expenses', compact('pivotData','months','existingYears', 'selectedYear','latestExpenses'));
+    }
+
+    public function incomes(Request $request) {
+        // Get all existing years from transactions (for year selector)
+        $existingYears = Transaction::selectRaw('YEAR(transaction_date_completed) as year')
+            ->distinct()
+            ->orderBy('year')
+            ->pluck('year');
+
+        // Get selected year from URL
+        // Default is newest
+        $selectedYear = $request->get('year', $existingYears->first() ?? date('Y'));
+    
+        // Fetch only expense transactions with their relationships
+        $transactions = Transaction::whereHas('category', function ($q) {
+            $q->whereNot('category_direction','-');
+        })
+        ->whereYear('transaction_date_completed', $selectedYear)
+        ->where('transaction_amount','>',0)
+        ->with(['category','subcategory'])
+        ->get();
+
+        $pivotData = [];
+        //TODO: remove hard-coding from this part
+        $months = ['Január', 'Február', 'Március', 'Április', 'Május', 'Június','Július', 'Augusztus', 'Szeptember', 'Október', 'November', 'December'];
+
+        foreach ($transactions as $transaction) {
+            //Get month number (from record) and pair it to the string array values
+            $monthNumber = (int)date('n', strtotime($transaction->transaction_date_completed)) - 1;
+            $monthName = $months[$monthNumber];
+
+            $categoryName = $transaction->category->category_name;
+            $subcategoryName = $transaction->subcategory?->subcategory_name ?? null;
+
+            // Initialize nested arrays if not set
+            if (!isset($pivotData[$categoryName])) {
+                $pivotData[$categoryName] = ['total' => array_fill_keys($months, 0), 'subs' => []];
+            }
+            if($subcategoryName) {
+                if (!isset($pivotData[$categoryName]['subs'][$subcategoryName])) {
+                    $pivotData[$categoryName]['subs'][$subcategoryName] = array_fill_keys($months, 0);
+                }
+            }
+
+            // Add to the specific subcategory month
+            if($subcategoryName) {
+                $pivotData[$categoryName]['subs'][$subcategoryName][$monthName] += $transaction->transaction_amount;
+            }
+
+            // Add to the main category total for that month
+            $pivotData[$categoryName]['total'][$monthName] += $transaction->transaction_amount;
+        }
+
+        //Getting the latest transactions
+        $latestIncomes = $this->latest_transactions(5, false);
+        
+        return view('transactions.incomes', compact('pivotData','months','existingYears', 'selectedYear','latestIncomes'));
     }
 
     private function latest_transactions(int $number_of_entries, bool $is_expense) {
