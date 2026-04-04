@@ -15,45 +15,64 @@
     @endforeach
     </div>
     
-    <table class="summary-table">
-        <thead>
-            <tr class="summary-table-header">
-                <th style="text-align: left;"></th>
-                @foreach($months as $month)
-                    <th>{{ $month }}</th>
-                @endforeach
-                <th>Összesen</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($pivotData as $categoryName => $data)
-                @php $categoryTotalYear = array_sum($data['total']); @endphp
-                <tr class="summary-table-main-category" data-category="{{ $categoryName }}">
-                    <td><a class="table-expand" style="cursor: pointer;"> ⯈ </a>
-                        <!--details>
-                            <summary-->
-                                {{ $categoryName }} @php echo count($data['subs']) > 0 ? '('.count($data['subs']).')' : ''; @endphp
-                            <!--/summary>
-                        </details-->
-                    </td>
-                    
+    <div style="display: flex; gap: 30px; align-items: flex-start;">
+        <table class="summary-table" style="flex: 3;">
+            <thead>
+                <tr class="summary-table-header">
+                    <th style="text-align: left;"></th>
                     @foreach($months as $month)
-                        <!--TODO: replace ' Ft' with dynamic currency sign?-->
-                        <td> {{ $data['total'][$month] > 0 ? number_format($data['total'][$month], 0, ',', ' ') . ' Ft' : '-' }} </td>
+                        <th>{{ $month }}</th>
                     @endforeach
-                    <td class="summary-table-year-sum-main">{{ number_format($categoryTotalYear, 0, ',', ' ') }} Ft</td>
+                    <th>Összesen</th>
                 </tr>
-
-                <!-- Subcategory rows hidden until category is expanded) -->
-                @foreach($data['subs'] as $subName => $subMonths)
-                    <tr class="summary-table-subcategory" data-parent="{{ $categoryName }}" style="display: none;">
-                        <td style="padding-left: 30px;">{{ $subName }}</td>
+            </thead>
+            <tbody>
+                @foreach($pivotData as $categoryName => $data)
+                    @php $categoryTotalYear = array_sum($data['total']); @endphp
+                    <tr class="summary-table-main-category" data-category="{{ $categoryName }}">
+                        <td><a class="table-expand" style="cursor: pointer;"> ⯈ </a>
+                            <!--details>
+                                <summary-->
+                                    {{ $categoryName }} @php echo count($data['subs']) > 0 ? '('.count($data['subs']).')' : ''; @endphp
+                                <!--/summary>
+                            </details-->
+                        </td>
+                        
                         @foreach($months as $month)
-                            <td>{{ $subMonths[$month] > 0 ? number_format($subMonths[$month], 0, ',', ' ') . ' Ft' : '-' }}</td>
+                            <!--TODO: replace ' Ft' with dynamic currency sign?-->
+                            <td> {{ $data['total'][$month] > 0 ? number_format($data['total'][$month], 0, ',', ' ') . ' Ft' : '-' }} </td>
                         @endforeach
-                        <td class="summary-table-year-sum-sub">{{ number_format(array_sum($subMonths), 0, ',', ' ') }} Ft</td>
+                        <td class="summary-table-year-sum-main">{{ number_format($categoryTotalYear, 0, ',', ' ') }} Ft</td>
+                    </tr>
+
+                    <!-- Subcategory rows hidden until category is expanded) -->
+                    @foreach($data['subs'] as $subName => $subMonths)
+                        <tr class="summary-table-subcategory" data-parent="{{ $categoryName }}" style="display: none;">
+                            <td style="padding-left: 30px;">{{ $subName }}</td>
+                            @foreach($months as $month)
+                                <td>{{ $subMonths[$month] > 0 ? number_format($subMonths[$month], 0, ',', ' ') . ' Ft' : '-' }}</td>
+                            @endforeach
+                            <td class="summary-table-year-sum-sub">{{ number_format(array_sum($subMonths), 0, ',', ' ') }} Ft</td>
+                    @endforeach
                 @endforeach
-            @endforeach
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+
+        <div class="recent_transactions_box" style="flex: 1;">
+            <h3>Legutóbbi tranzakciók</h3>
+            <ul class="recent_transactions_list">
+                @foreach($latestExpenses as $expense)
+                    <li>
+                        {{ number_format(abs($expense->transaction_amount), 0, ',', ' ') }} Ft
+                        <br>
+                        {{ $expense->category->category_name }} / {{ $expense->subcategory?->subcategory_name ?? '-'}}
+                        <br>
+                        {{ $expense->transaction_date_completed }}
+                        <br>
+                        <a href="https://c.tenor.com/x8v1oNUOmg4AAAAd/tenor.gif" target="_blank">Részletek...</a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
 </x-layout>

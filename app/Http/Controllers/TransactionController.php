@@ -27,15 +27,15 @@ class TransactionController extends Controller
         return view('transactions.all', compact('transactions'));
         */
 
-        // 1. Start a query builder
+        // Start query builder
         $query = Transaction::with(['category', 'subcategory', 'account', 'currency']);
 
-        // 2. Filter by Search (in description)
+        // Filter by Search (in description)
         if ($request->filled('search')) {
             $query->where('transaction_description', 'like', '%' . $request->search . '%');
         }
 
-        // 3. Filter by Category and Subactegory
+        // Filter by Category and Subactegory
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
             if($request->filled('subcategory_id')) {
@@ -43,7 +43,7 @@ class TransactionController extends Controller
             }
         }
 
-        // 4. Get the data
+        // Get data
         $transactions = $query->orderBy('transaction_date_completed', 'desc')->paginate(25);
 
         // Get content for the dropdown menus
@@ -54,7 +54,7 @@ class TransactionController extends Controller
         }
         else $subcategories = Subcategory::all();
 
-        //Returning the results of the query with variables that we might need to use in the view.
+        //Return the results of query with variables needed in the view.
         return view('transactions.all', compact('transactions', 'categories','subcategories'));
     }
 
@@ -112,7 +112,25 @@ class TransactionController extends Controller
 
         //DEBUG TOOL - Stops the app and shows the data
         //dd($pivotData['Szolgáltatások']);
+
+        //Getting the latest transactions
+        $latestExpenses = $this->latest_transactions(5, true);
         
-        return view('transactions.expenses', compact('pivotData','months','existingYears', 'selectedYear'));
+        return view('transactions.expenses', compact('pivotData','months','existingYears', 'selectedYear','latestExpenses'));
+    }
+
+    private function latest_transactions(int $number_of_entries, bool $is_expense) {
+        $query = Transaction::with(['category','subcategory','currency']);
+
+        if($is_expense)
+            $query->where('transaction_amount', '<', 0);
+        else
+            $query->where('transaction_amount', '>', 0);
+
+        return $query
+            ->orderBy('transaction_date_completed', 'desc')
+            ->orderBy('transaction_id','desc')
+            ->limit($number_of_entries)
+            ->get();
     }
 }
