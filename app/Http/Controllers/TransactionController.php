@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use SebastianBergmann\CodeCoverage\FileCouldNotBeWrittenException;
 use function PHPUnit\Framework\isNull;
 
 class TransactionController extends Controller
@@ -173,6 +174,11 @@ class TransactionController extends Controller
         $latestIncomes = $this->latest_transactions(5, false);
         
         return view('transactions.incomes', compact('pivotData','months','existingYears', 'selectedYear','latestIncomes'));
+    }
+
+    public function show(Transaction $transaction) {
+        //Partial view - inside modal
+        return view('transactions.partials.show', compact('transaction'));
     }
 
     private function latest_transactions(int $number_of_entries, bool $is_expense) {
