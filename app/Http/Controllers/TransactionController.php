@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Category;
+use App\Models\Currency;
 use App\Models\Subcategory;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -179,6 +181,36 @@ class TransactionController extends Controller
     public function show(Transaction $transaction) {
         //Partial view - inside modal
         return view('transactions.partials.show', compact('transaction'));
+    }
+
+    
+    public function edit(Transaction $transaction) {
+        // Fething data for / displaying edit form
+        $categories = Category::all();
+        $subcategories = Subcategory::where('category_id', $transaction->category_id)->get();
+        $accounts = Account::all();
+        $currencies = Currency::all();
+
+        return view('transactions.partials.edit', compact('transaction', 'categories', 'subcategories', 'accounts', 'currencies'));
+    }
+
+    public function update(Request $request, Transaction $transaction) {
+        $validated = $request->validate([
+            'transaction_date_completed' => 'required|date',
+            'transaction_amount' => 'required|numeric',
+            'category_id' => 'required|exists:categories,category_id',
+            'subcategory_id' => 'nullable|exists:subcategories,subcategory_id',
+            'transaction_description' => 'nullable|string|max:255',
+            'currency_id' => 'required|exists:currencies,currency_id',
+            'account_id' => 'required|exists:accounts,account_id',
+            'is_split' => 'required|boolean',
+            'transaction_split_amount' => 'nullable|numeric'
+        ]);
+
+        $transaction->update($validated);
+
+        //Redirect with success message
+        return redirect()->back()->with('success','Tranzakció frissítve');
     }
 
     private function latest_transactions(int $number_of_entries, bool $is_expense) {

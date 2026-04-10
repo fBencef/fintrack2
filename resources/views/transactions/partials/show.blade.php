@@ -11,7 +11,7 @@
 <p><strong>Leírás:</strong> {{ $transaction->transaction_description ?? '-' }}</p>
 
 <div style="margin-top: 20px; display: flex; gap: 10px;">
-    <a href="{{ route('transactions.edit', $transaction->transaction_id) }}" class="btn-edit">Szerkesztés</a>
+    <button type="button" onclick="editTransaction({{ $transaction->transaction_id }})">Szerkesztés</button>
     
     <form action="{{ route('transactions.destroy', $transaction->transaction_id) }}" method="POST">
         @csrf
