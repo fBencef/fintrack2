@@ -69,10 +69,24 @@
                         <br>
                         {{ $income->transaction_date_completed }}
                         <br>
-                        <a href="https://c.tenor.com/x8v1oNUOmg4AAAAd/tenor.gif" target="_blank">Részletek...</a>
+                        <button
+                            type="button"
+                            onclick="showTransactionDetails({{ $income->transaction_id }})"
+                            class="details-btn">
+                            Részletek
+                        </button>
                     </li>
                 @endforeach
             </ul>
+        </div>
+    </div>
+
+    <div id="transactionModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="modal-body">
+                <p>Modal...</p>
+            </div>
         </div>
     </div>
 </x-layout>
