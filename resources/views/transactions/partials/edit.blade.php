@@ -10,7 +10,7 @@
     <br>
 
     <label>Dátum:</label>
-    <input type="date" name="transaction_date_completed" value="{{ $transaction->transaction_date_completed }}" required>
+    <input type="date" name="transaction_date_completed" value="{{ date('Y-m-d', strtotime($transaction->transaction_date_completed)) }}" required>
     <br>
 
     <label>Összeg:</label>
@@ -26,6 +26,7 @@
         @endforeach
     </select>
     <select name="subcategory_id" id="modal_subcategory_select">
+        <option value="">-- nincs alkategória --</option>
         @foreach($subcategories as $subcat)
             <option value="{{ $subcat->subcategory_id }}" {{ $transaction->subcategory_id == $subcat->subcategory_id ? 'selected' : '' }}>
                 {{ $subcat->subcategory_name }}
@@ -55,7 +56,7 @@
     <br>
 
     <label>Megosztott:</label>
-    <input type="checkbox" name="is_split" value="{{ $transaction->is_split }}">
+    <input type="checkbox" name="is_split" value="1" {{ $transaction->is_split ? 'checked' : '' }}>
     <br>
 
     <label>Saját rész:</label>
@@ -68,6 +69,6 @@
 
     <div style="margin-top: 15px;">
         <button type="submit" class="btn-save">Mentés</button>
-        <button type="button" onclick="showTransactionDetails({{ $transaction->id }})">Mégse</button>
+        <button type="button" onclick="showTransactionDetails({{ $transaction->transaction_id }})">Mégse</button>
     </div>
 </form>

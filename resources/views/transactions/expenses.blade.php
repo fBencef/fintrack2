@@ -3,6 +3,12 @@
 
 <x-layout title="Expenses">
 
+    @if(session('success'))
+    <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 20px; border-radius: 5px;">
+        {{ session('success') }}
+    </div>
+    @endif
+    
     <h2>Expenses</h2>
 
     <div class="table-container">

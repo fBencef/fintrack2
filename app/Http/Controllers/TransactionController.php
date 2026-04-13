@@ -203,14 +203,30 @@ class TransactionController extends Controller
             'transaction_description' => 'nullable|string|max:255',
             'currency_id' => 'required|exists:currencies,currency_id',
             'account_id' => 'required|exists:accounts,account_id',
-            'is_split' => 'required|boolean',
+            'is_split' => 'boolean',
             'transaction_split_amount' => 'nullable|numeric'
         ]);
+
+        // Manually ensure is_split false if missing from the request
+        $validated['is_split'] = $request->has('is_split');
+
+        //Fix for the null not saving issue
+        $validated['subcategory_id'] = $request->input('subcategory_id') ?: null;
+        $validated['transaction_description'] = $request->input('transaction_description') ?: null;
+        $validated['transaction_split_amount'] = $request->input('transaction_split_amount') ?: null;
+
+        //dd($validated); // Add this temporarily
 
         $transaction->update($validated);
 
         //Redirect with success message
-        return redirect()->back()->with('success','Tranzakció frissítve');
+        return redirect()->back()->with('success','Tranzakció frissítve.');
+    }
+
+    public function destroy(Transaction $transaction) {
+        $transaction->delete();
+
+        return redirect()->back()->with('success','Tranzakció törölve.');
     }
 
     private function latest_transactions(int $number_of_entries, bool $is_expense) {
