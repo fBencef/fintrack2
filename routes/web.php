@@ -27,3 +27,6 @@ Route::get('/transactions/{transaction}', [TransactionController::class, 'show']
 // Standard Resource routes for Edit, Update, and Delete
 // Automatically creates /transactions/{id}/edit and DELETE (Laravel)
 Route::resource('transactions', TransactionController::class)->except(['index', 'show']);
+
+// Route for the dynamic subcat dropdowns
+Route::get('/api/categories/{category}/subcategories', [TransactionController::class, 'getSubcategories']);

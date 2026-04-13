@@ -229,6 +229,13 @@ class TransactionController extends Controller
         return redirect()->back()->with('success','Tranzakció törölve.');
     }
 
+    public function getSubcategories($categoryID) {
+        $subcategories = Subcategory::where('category_id', $categoryID)->get();
+
+        //Returning subcats belonging to a category in JSON
+        return response()->json($subcategories);
+    }
+
     private function latest_transactions(int $number_of_entries, bool $is_expense) {
         $query = Transaction::with(['category','subcategory','currency']);
 

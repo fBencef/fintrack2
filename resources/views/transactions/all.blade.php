@@ -1,3 +1,5 @@
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+
 <x-layout title="All Transactions">
     <h2>Tranzakciók ({{ $transactions->total() }})</h2>
 
@@ -16,8 +18,8 @@
         <!--Category dropdown-->
         <div style="margin-bottom: 15px;">
             <label style="display: block; font-size: 12px; font-weight: bold;">Category</label>
-            <select name="category_id" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                <option value="">All Categories</option>
+            <select name="category_id" id="all_category_select" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">Minden kategória</option>
                 @foreach($categories as $category)
                     <option value="{{ $category->category_id }}" {{ request('category_id') == $category->category_id ? 'selected' : '' }}>
                         {{ $category->category_name }}
@@ -29,8 +31,8 @@
         <!--Subcategory dropdown-->
         <div style="margin-bottom: 15px;">
             <label style="display: block; font-size: 12px; font-weight: bold;">Subcategory</label>
-            <select name="subcategory_id" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                <option value="">All Subcategories</option>
+            <select name="subcategory_id" id="all_subcategory_select" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">Minden alkategória</option>
                 @foreach($subcategories as $subcategory)
                     <option value="{{ $subcategory->subcategory_id }}" {{ request('subcategory_id') == $subcategory->subcategory_id ? 'selected' : '' }}>
                         {{ $subcategory->subcategory_name }}
