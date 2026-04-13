@@ -10,6 +10,10 @@
 
     <h2>Incomes</h2>
 
+    <button type="button" onclick="createTransaction()" class="btn-create">
+    + Új Tranzakció
+    </button>
+
     <div class="table-container">
     
     <div class="year-selector">

@@ -215,12 +215,47 @@ class TransactionController extends Controller
         $validated['transaction_description'] = $request->input('transaction_description') ?: null;
         $validated['transaction_split_amount'] = $request->input('transaction_split_amount') ?: null;
 
-        //dd($validated); // Add this temporarily
-
         $transaction->update($validated);
 
         //Redirect with success message
         return redirect()->back()->with('success','Tranzakció frissítve.');
+    }
+
+    public function create(){
+        //Fething data for form
+        $categories = Category::all();
+        $subcategories = Subcategory::all();
+        $accounts = Account::all();
+        $currencies = Currency::all();
+
+        return view('transactions.partials.create', compact('categories', 'subcategories', 'currencies', 'accounts'));
+    }
+    
+    // Create new entry
+    public function store(Request $request) {
+        $validated = $request->validate([
+            'transaction_date_completed' => 'required|date',
+            'transaction_amount' => 'required|numeric',
+            'category_id' => 'required|exists:categories,category_id',
+            'subcategory_id' => 'nullable|exists:subcategories,subcategory_id',
+            'transaction_description' => 'nullable|string|max:255',
+            'currency_id' => 'required|exists:currencies,currency_id',
+            'account_id' => 'required|exists:accounts,account_id',
+            'is_split' => 'boolean',
+            'transaction_split_amount' => 'nullable|numeric'
+        ]);
+
+        // Manually ensure is_split false if missing from the request
+        $validated['is_split'] = $request->has('is_split');
+
+        //Fix for the null not saving issue
+        $validated['subcategory_id'] = $request->input('subcategory_id') ?: null;
+        $validated['transaction_description'] = $request->input('transaction_description') ?: null;
+        $validated['transaction_split_amount'] = $request->input('transaction_split_amount') ?: null;
+
+        Transaction::create($validated);
+
+        return redirect()->back()->with('success','Tranzakció rögzítve.');
     }
 
     public function destroy(Transaction $transaction) {
@@ -235,6 +270,7 @@ class TransactionController extends Controller
         //Returning subcats belonging to a category in JSON
         return response()->json($subcategories);
     }
+
 
     private function latest_transactions(int $number_of_entries, bool $is_expense) {
         $query = Transaction::with(['category','subcategory','currency']);
