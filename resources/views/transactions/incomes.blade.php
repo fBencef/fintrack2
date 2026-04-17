@@ -8,6 +8,16 @@
     </div>
     @endif
 
+    @if ($errors->any())
+    <div style="color: red; background: #ffeeee; padding: 10px; border: 1px solid red;">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <h2>Incomes</h2>
 
     <button type="button" onclick="createTransaction()" class="btn-create">

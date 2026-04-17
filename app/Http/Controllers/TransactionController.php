@@ -233,6 +233,8 @@ class TransactionController extends Controller
     
     // Create new entry
     public function store(Request $request) {
+        //dd($request->all());
+    
         $validated = $request->validate([
             'transaction_date_completed' => 'required|date',
             'transaction_amount' => 'required|numeric',
@@ -245,6 +247,9 @@ class TransactionController extends Controller
             'transaction_split_amount' => 'nullable|numeric'
         ]);
 
+        //If no user is leggoed in, default to ID 1. (for development purposes)
+        $validated['user_id'] = auth()->id() ?? 1;
+        
         // Manually ensure is_split false if missing from the request
         $validated['is_split'] = $request->has('is_split');
 

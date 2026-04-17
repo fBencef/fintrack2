@@ -27,9 +27,7 @@
     <label>Pénznem:</label>
     <select name="currency_id" id="modal_currency_select">
         @foreach($currencies as $currency)
-            <option>
-                {{ $currency->currency_name }}
-            </option>
+            <option value="{{ $currency->currency_id }}">{{ $currency->currency_name }}</option>
         @endforeach
     </select>
     <br>
@@ -37,9 +35,7 @@
     <label>Számla:</label>
     <select name="account_id" id="modal_account_select">
         @foreach($accounts as $account)
-            <option>
-                {{ $account->account_name }}
-            </option>
+            <option value="{{ $account->account_id }}">{{ $account->account_name }}</option>
         @endforeach
     </select>
     <br>
