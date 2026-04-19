@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('transaction_split_amount',15,2)->nullable();
             $table->dateTime('transaction_date_completed');
             $table->string('transaction_description')->nullable();
+            $table->enum('transaction_status',['confirmed','pending','declined'])->default('confirmed');
             $table->timestamps();
         });
     }

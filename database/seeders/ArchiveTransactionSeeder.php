@@ -37,6 +37,7 @@ class ArchiveTransactionSeeder extends Seeder
                 'user_id'                    => 1,
                 'transaction_description'    => $row[10] ?: null,
                 'is_split'                   => false,
+                'transaction_status'         => 'confirmed',
             ]);
         }
 

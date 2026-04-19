@@ -74,7 +74,7 @@ class TransactionController extends Controller
     
         // Fetch only expense transactions with their relationships
         $transactions = Transaction::whereHas('category', function ($q) {
-            $q->whereNot('category_direction','+');
+            $q->whereNot('category_direction','+')->where('transaction_status','confirmed');
         })
         ->whereYear('transaction_date_completed', $selectedYear)
         ->where('transaction_amount','<',0)
@@ -134,7 +134,7 @@ class TransactionController extends Controller
     
         // Fetch only expense transactions with their relationships
         $transactions = Transaction::whereHas('category', function ($q) {
-            $q->whereNot('category_direction','-');
+            $q->whereNot('category_direction','-')->where('transaction_status','confirmed');
         })
         ->whereYear('transaction_date_completed', $selectedYear)
         ->where('transaction_amount','>',0)
@@ -286,6 +286,7 @@ class TransactionController extends Controller
             $query->where('transaction_amount', '>', 0);
 
         return $query
+            ->where('transaction_status','confirmed')
             ->orderBy('transaction_date_completed', 'desc')
             ->orderBy('transaction_id','desc')
             ->limit($number_of_entries)

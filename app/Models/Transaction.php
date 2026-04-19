@@ -20,7 +20,8 @@ class Transaction extends Model
     'transaction_amount',
     'transaction_split_amount',
     'transaction_date_completed',
-    'transaction_description'
+    'transaction_description',
+    'transaction_status'
     ];
 
 
