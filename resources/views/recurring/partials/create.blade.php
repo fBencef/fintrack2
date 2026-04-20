@@ -65,6 +65,12 @@
     </label>
     <br>
 
+    <label>
+        <input type="checkbox" name="recurring_is_active" value="1"> 
+        Aktív
+    </label>
+    <br>
+
     <div style="margin-top: 20px;">
         <button type="submit" class="btn-save">Mentés</button>
     </div>

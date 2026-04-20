@@ -74,41 +74,4 @@ class RecurringTransactionController extends Controller
 
     return view('recurring.partials.create', compact('categories', 'subcategories', 'accounts', 'currencies'));
     } 
-    
-    public function processPending() {
-        $today = now()->format('Y-m-d');
-
-        //Find active recurrings with due date today
-        $recurrings = RecurringTransaction::whre('recurring_is_active',true)
-            ->where('next_execution_date','<=',$today)
-            ->get();
-
-        foreach ($recurrings as $recurring) {
-            // Create a pending Transaction entry
-            Transaction::create([
-                'user_id' => $recurring->user_id,
-                'transaction_date_completed' => $recurring->next_execution_date,
-                'transaction_amount' => $recurring->recurring_amount,
-                'category_id' => $recurring->category_id,
-                'subcategory_id' => $recurring->subcategory_id,
-                'currency_id' => $recurring->currency_id,
-                'account_id' => $recurring->account_id,
-                'transaction_description' => $recurring->recurring_description . ' Automatikusan létrehozva.',
-                'transaction_status' => 'pending',
-                'is_split' => false
-            ]);
-
-        //Calculate the next occurence
-        $nextOccurence = match($recurring->frequency_type) {
-            'daily'   => Carbon::parse($recurring->next_execution_date)->addDays($recurring->frequency_intervall),
-            'weekly'  => Carbon::parse($recurring->next_execution_date)->addWeeks($recurring->frequency_intervall),
-            'monthly' => Carbon::parse($recurring->next_execution_date)->addMonths($recurring->frequency_intervall),
-            'yearly'  => Carbon::parse($recurring->next_execution_date)->addYears($recurring->frequency_intervall),
-        };
-
-        //Update recurring
-        $recurring->update(['next_execution_date' => $nextOccurence]);
-        
-        }
-    }
 }

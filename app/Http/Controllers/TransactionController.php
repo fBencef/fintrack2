@@ -20,19 +20,12 @@ class TransactionController extends Controller
      */
     public function all(Request $request)
     {
-    /*    
-    // 1. Fetch data from the Model
-        $transactions = Transaction::with(['category', 'account','subcategory'])
-            ->orderBy('transaction_date_completed', 'desc') // Newest first
-            ->paginate(25); // Automatically create pagination logic
-
-        // 2. Return the View and pass the data
-        return view('transactions.all', compact('transactions'));
-        */
-
         // Start query builder
         $query = Transaction::with(['category', 'subcategory', 'account', 'currency']);
 
+        // Exclude pending ones (unpaind recurring)
+        $query->where('transaction_status','confirmed');
+        
         // Filter by Search (in description)
         if ($request->filled('search')) {
             $query->where('transaction_description', 'like', '%' . $request->search . '%');
@@ -47,7 +40,7 @@ class TransactionController extends Controller
         }
 
         // Get data
-        $transactions = $query->orderBy('transaction_date_completed', 'desc')->paginate(25);
+        $transactions = $query->orderBy('transaction_id', 'desc')->paginate(25);
 
         // Get content for the dropdown menus
         $categories = Category::all();
@@ -223,7 +216,9 @@ class TransactionController extends Controller
         $transaction->update($validated);
 
         //Redirect with success message
-        return redirect()->back()->with('success','Tranzakció frissítve.');
+        if($transaction->transaction_status === 'pending') $message = 'Tranzakció jóváhagyva.';
+        else $message = 'Tranzakció frissítve.';
+        return redirect()->back()->with('success',$message);
     }
 
     public function create(){

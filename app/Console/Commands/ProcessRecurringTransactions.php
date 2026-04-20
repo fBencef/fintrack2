@@ -28,13 +28,13 @@ class ProcessRecurringTransactions extends Command
      */
     public function handle()
     {
-        $today = now()->startOfDay();
+        $today = now()->format('Y-m-d');
         //DEBUG
-        $this->info("Checking for transactions due on or before: " . $today->toDateString());
+        $this->info("Checking for transactions due on or before: " . $today);
 
         //Find active recurrings with due date today
-        $recurrings = RecurringTransaction::where('recurring_is_active',true)
-            ->where('next_execution_date','<=',$today)
+        $recurrings = RecurringTransaction::where('recurring_is_active',1)
+            ->whereDate('next_execution_date','<=',$today)
             ->get();
 
         //DEBUG
@@ -72,6 +72,6 @@ class ProcessRecurringTransactions extends Command
         $count++;
     }
 
-    $this->info('Successfully generated'. $count .'pending transactions.');
+    $this->info('Successfully generated '. $count .' pending transactions.');
     }
 }

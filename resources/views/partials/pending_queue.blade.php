@@ -1,3 +1,5 @@
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+
 <div class="pending-container">
     <h3>Jóváhagyásra váró tételek ({{ $pendingTransactions->count() }})</h3>
     <table class="pivot-table">
@@ -21,7 +23,7 @@
                             <button type="submit" class="btn-approve">✔</button>
                         </form>
 
-                        <button type="button" onclick="showTransactionDetails({{ $pending->transaction_id }})" class="btn-edit-pending">✎</button>
+                        <button type="button" onclick="editTransaction({{ $pending->transaction_id }})" class="btn-edit-pending">✎</button>
 
                         <form action="{{ route('transactions.destroy', $pending->transaction_id) }}" method="POST" style="display:inline;">
                             @csrf @method('DELETE')
@@ -34,4 +36,13 @@
             @endforelse
         </tbody>
     </table>
+</div>
+
+<div id="transactionModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div id="modal-body">
+            <p>Modal...</p>
+        </div>
+    </div>
 </div>

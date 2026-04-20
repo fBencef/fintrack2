@@ -69,6 +69,13 @@
 
     <div style="margin-top: 15px;">
         <button type="submit" class="btn-save">Mentés</button>
-        <button type="button" onclick="showTransactionDetails({{ $transaction->transaction_id }})">Mégse</button>
+        @if($transaction->transaction_status === 'pending')
+            <button type="button" onclick="closeModal()">Mégse</button>
+        @else
+            <button type="button" onclick="showTransactionDetails({{ $transaction->transaction_id }})">Mégse</button>
+        @endif
     </div>
+
+    <!-- This is for the edit script to know wether it is a pending or an existing transaction-->
+    <input type="hidden" name="transaction_status" value="{{ $transaction->transaction_status }}">
 </form>

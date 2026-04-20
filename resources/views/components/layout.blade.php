@@ -36,7 +36,7 @@
 </head>
 <body>
     <nav>
-        <h1>FinTrack OE</h1>
+        <h1><a href="/">FinTrack OE</a></h1>
         <ul>
             <li><a href="/transactions/incomes">Bevétel</a></li>
             <li><a href="/transactions/expenses">Kiadás</a></li>
