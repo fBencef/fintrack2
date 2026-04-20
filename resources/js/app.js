@@ -4,3 +4,4 @@ import './show_transaction_details';
 import './edit_transaction';
 import './create_transaction';
 import './event_listeners';
+import './create_recurring';

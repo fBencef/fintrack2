@@ -38,9 +38,10 @@
     <nav>
         <h1>FinTrack OE</h1>
         <ul>
-            <li><a href="/transactions/incomes">Incomes</a></li>
-            <li><a href="/transactions/expenses">Expenses</a></li>
-            <li><a href="/transactions">All Transactions</a></li>
+            <li><a href="/transactions/incomes">Bevétel</a></li>
+            <li><a href="/transactions/expenses">Kiadás</a></li>
+            <li><a href="/transactions">Minden tranzakció</a></li>
+            <li><a href="/recurring">Ismétlődő tranzakciók</a></li>
         </ul>    
     </nav>
 

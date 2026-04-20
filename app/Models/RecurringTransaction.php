@@ -29,6 +29,15 @@ class RecurringTransaction extends Model
         'recurring_is_prediction'
     ];
 
+    //This is for Carbon object to work
+    protected $casts = [
+    'next_execution_date' => 'date',
+    'recurring_start_date' => 'date',
+    'recurring_end_date' => 'date',
+    'recurring_is_active' => 'boolean',
+    'recurring_is_prediction' => 'boolean',
+    ];
+
     
     //Referenced by this
     public function user(): BelongsTo

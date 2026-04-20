@@ -24,9 +24,9 @@ return new class extends Migration
             $table->date('recurring_start_date');
             $table->date('recurring_end_date')->nullable();
             $table->string('frequency_type');
-            $table->integer('frequency_intervall');
+            $table->integer('frequency_intervall')->default(1);
             $table->integer('day_of_recurrence')->nullable();
-            $table->date('next_exection_date');
+            $table->date('next_execution_date');
             $table->boolean('recurring_is_active')->default(true);
             $table->boolean('recurring_is_prediction');
             $table->timestamps();

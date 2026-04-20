@@ -2,9 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\RecurringTransactionController;
+use App\Http\Controllers\DashboardController;
 
 // Dashboard / Home page
-Route::get('/', [TransactionController::class, 'index'])->name('dashboard');
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+// Recurring transactions
+Route::resource('/recurring', RecurringTransactionController::class);
 
 // All transactions
 Route::get('/transactions', [TransactionController::class, 'all'])->name('transactions.all');
@@ -28,6 +33,10 @@ Route::get('/transactions/{transaction}', [TransactionController::class, 'show']
 // Standard Resource routes for Edit, Update, and Delete
 // Automatically creates /transactions/{id}/edit and DELETE (Laravel)
 Route::resource('transactions', TransactionController::class)->except(['index', 'show']);
+
+// Transaction approval
+Route::patch('/transactions/{transaction}/approve', [TransactionController::class, 'approve'])
+    ->name('transactions.approve');
 
 
 // Route for the dynamic subcat dropdowns

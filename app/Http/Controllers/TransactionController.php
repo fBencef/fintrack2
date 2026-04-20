@@ -215,6 +215,11 @@ class TransactionController extends Controller
         $validated['transaction_description'] = $request->input('transaction_description') ?: null;
         $validated['transaction_split_amount'] = $request->input('transaction_split_amount') ?: null;
 
+        // If it was pending mark as confirmed
+        if ($transaction->transaction_status === 'pending') {
+        $validated['transaction_status'] = 'confirmed';
+        }
+
         $transaction->update($validated);
 
         //Redirect with success message
@@ -274,6 +279,17 @@ class TransactionController extends Controller
 
         //Returning subcats belonging to a category in JSON
         return response()->json($subcategories);
+    }
+
+    // Used for recalculating completion date of recurrings approved with a delay
+    public function approve(Transaction $transaction) {
+        
+        $transaction->update([
+        'transaction_status' => 'confirmed',
+        'transaction_date_completed' => now()->format('Y-m-d') 
+        ]);
+
+        return redirect()->back()->with('success', 'Tranzakció rögzítve.');
     }
 
 
