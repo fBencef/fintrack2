@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Partner extends Model
 {
-    protected $primaryKey = "partner_id"
+    protected $primaryKey = "partner_id";
 
     protected $fillable = [
         'partner_id',

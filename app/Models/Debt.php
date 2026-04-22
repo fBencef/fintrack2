@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Debt extends Model
 {
-    protected $primaryKey = 'debt_id'
+    protected $primaryKey = 'debt_id';
 
     protected $fillable = [
         'debt_id',
