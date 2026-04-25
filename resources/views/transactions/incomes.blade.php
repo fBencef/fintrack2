@@ -1,6 +1,6 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-<x-layout title="Expenses">
+<x-app-layout title="Expenses">
 
     @if(session('success'))
     <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 20px; border-radius: 5px;">
@@ -109,4 +109,4 @@
             </div>
         </div>
     </div>
-</x-layout>
+</x-app-layout>

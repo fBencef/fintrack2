@@ -1,43 +1,47 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\RecurringTransactionController;
-use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Route;
 
-// Dashboard / Home page
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+// Dashboard as landing page
+Route::get('/', function () {
+    return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
+});
 
-// Recurring transactions
-Route::resource('/recurring', RecurringTransactionController::class);
+// Protected Routes (login needed)
+Route::middleware(['auth', 'verified'])->group(function () {
+    
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// All transactions
-Route::get('/transactions', [TransactionController::class, 'all'])->name('transactions.all');
+    // Recurring transactions
+    Route::resource('recurring', RecurringTransactionController::class);
 
-// Incomes
-Route::get('/transactions/incomes', [TransactionController::class, 'incomes'])->name('transactions.incomes');
+    // Filtered transaction views
+    Route::get('/transactions/all', [TransactionController::class, 'all'])->name('transactions.all');
+    Route::get('/transactions/incomes', [TransactionController::class, 'incomes'])->name('transactions.incomes');
+    Route::get('/transactions/expenses', [TransactionController::class, 'expenses'])->name('transactions.expenses');
 
-// Expenses
-Route::get('/transactions/expenses', [TransactionController::class, 'expenses'])->name('transactions.expenses');
+    // Transaction Details & Creation
+    Route::get('/transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
+    Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
 
-Route::get('/transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
+    // Standard Resource for Edit, Update, Delete
+    Route::resource('transactions', TransactionController::class)->except(['index', 'show', 'create']);
 
-// Transaction details
-// This has to be at the end because of wild-cards (?)
-Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
+    // Approval
+    Route::patch('/transactions/{transaction}/approve', [TransactionController::class, 'approve'])->name('transactions.approve');
 
-// AJAX route for the "Details" modal
-Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])
-    ->name('transactions.show');
+    // API route for subcategories
+    Route::get('/api/categories/{category}/subcategories', [TransactionController::class, 'getSubcategories']);
 
-// Standard Resource routes for Edit, Update, and Delete
-// Automatically creates /transactions/{id}/edit and DELETE (Laravel)
-Route::resource('transactions', TransactionController::class)->except(['index', 'show']);
+    // Breeze Profile Routes (User Settings)
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// Transaction approval
-Route::patch('/transactions/{transaction}/approve', [TransactionController::class, 'approve'])
-    ->name('transactions.approve');
-
-
-// Route for the dynamic subcat dropdowns
-Route::get('/api/categories/{category}/subcategories', [TransactionController::class, 'getSubcategories']);
+require __DIR__.'/auth.php';

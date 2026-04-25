@@ -5,3 +5,8 @@ import './edit_transaction';
 import './create_transaction';
 import './event_listeners';
 import './create_recurring';
+
+import './bootstrap';
+import Alpine from 'alpinejs';
+window.Alpine = Alpine;
+Alpine.start();

@@ -1,6 +1,6 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-<x-layout title="All Transactions">
+<x-app-layout title="All Transactions">
     <h2>Tranzakciók ({{ $transactions->total() }})</h2>
 
     <!--Filters (sidebar)-->
@@ -82,7 +82,7 @@
         </tbody>
     </table>
 
-<div class="pagination-container">
-    {{ $transactions->appends(request()->query())->links('vendor.pagination.tailwind') }}
-</div>
-</x-layout>
+    <div class="pagination-container">
+        {{ $transactions->appends(request()->query())->links('vendor.pagination.tailwind') }}
+    </div>
+</x-app-layout>
