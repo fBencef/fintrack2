@@ -43,5 +43,14 @@
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
+
+        <div class="mt-6 border-t border-gray-200 pt-6 text-center">
+            <p class="text-sm text-gray-600">
+                {{ __('Nincs még fiókod?') }}
+                <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500 transition ease-in-out duration-150">
+                    {{ __('Regisztráció') }}
+                </a>
+            </p>
+        </div>
     </form>
 </x-guest-layout>

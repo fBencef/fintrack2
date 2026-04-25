@@ -21,7 +21,8 @@ class TransactionController extends Controller
     public function all(Request $request)
     {
         // Start query builder
-        $query = Transaction::with(['category', 'subcategory', 'account', 'currency']);
+        $query = Transaction::where('user_id', auth()->id())
+            ->with(['category', 'subcategory', 'account', 'currency']);
 
         // Exclude pending ones (unpaind recurring)
         $query->where('transaction_status','confirmed');
@@ -66,13 +67,14 @@ class TransactionController extends Controller
         $selectedYear = $request->get('year', $existingYears->first() ?? date('Y'));
     
         // Fetch only expense transactions with their relationships
-        $transactions = Transaction::whereHas('category', function ($q) {
-            $q->whereNot('category_direction','+')->where('transaction_status','confirmed');
-        })
-        ->whereYear('transaction_date_completed', $selectedYear)
-        ->where('transaction_amount','<',0)
-        ->with(['category','subcategory'])
-        ->get();
+        $transactions = Transaction::where('user_id', auth()->id())
+            ->whereHas('category', function ($q) {
+                $q->whereNot('category_direction','+')->where('transaction_status','confirmed');
+            })
+            ->whereYear('transaction_date_completed', $selectedYear)
+            ->where('transaction_amount','<',0)
+            ->with(['category','subcategory'])
+            ->get();
 
         $pivotData = [];
         //TODO: remove hard-coding from this part
@@ -126,13 +128,14 @@ class TransactionController extends Controller
         $selectedYear = $request->get('year', $existingYears->first() ?? date('Y'));
     
         // Fetch only expense transactions with their relationships
-        $transactions = Transaction::whereHas('category', function ($q) {
-            $q->whereNot('category_direction','-')->where('transaction_status','confirmed');
-        })
-        ->whereYear('transaction_date_completed', $selectedYear)
-        ->where('transaction_amount','>',0)
-        ->with(['category','subcategory'])
-        ->get();
+        $transactions = Transaction::where('user_id', auth()->id())
+            ->whereHas('category', function ($q) {
+                $q->whereNot('category_direction','-')->where('transaction_status','confirmed');
+            })
+                ->whereYear('transaction_date_completed', $selectedYear)
+                ->where('transaction_amount','>',0)
+                ->with(['category','subcategory'])
+                ->get();
 
         $pivotData = [];
         //TODO: remove hard-coding from this part
@@ -172,16 +175,25 @@ class TransactionController extends Controller
     }
 
     public function show(Transaction $transaction) {
+        if ($transaction->user_id !== auth()->id()) {
+            abort(403, 'Ehhez a tranzakcióhoz nincs hozzáférésed.');
+        }
+    
         //Partial view - inside modal
         return view('transactions.partials.show', compact('transaction'));
     }
 
     
     public function edit(Transaction $transaction) {
+        
+        if ($transaction->user_id !== auth()->id()) {
+            abort(403, 'Ehhez a tranzakcióhoz nincs hozzáférésed.');
+        }
+    
         // Fething data for / displaying edit form
         $categories = Category::all();
         $subcategories = Subcategory::where('category_id', $transaction->category_id)->get();
-        $accounts = Account::all();
+        $accounts = Account::where('user_id', auth()->id())->get();
         $currencies = Currency::all();
 
         return view('transactions.partials.edit', compact('transaction', 'categories', 'subcategories', 'accounts', 'currencies'));
@@ -289,7 +301,8 @@ class TransactionController extends Controller
 
 
     private function latest_transactions(int $number_of_entries, bool $is_expense) {
-        $query = Transaction::with(['category','subcategory','currency']);
+        $query = Transaction::where('user_id', auth()->id())
+            ->with(['category','subcategory','currency']);
 
         if($is_expense)
             $query->where('transaction_amount', '<', 0);
