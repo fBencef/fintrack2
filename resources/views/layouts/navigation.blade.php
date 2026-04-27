@@ -27,6 +27,9 @@
                     <x-nav-link :href="route('recurring.index')" :active="request()->routeIs('recurring.index')">
                     {{ __('Ismétlődő tranzakciók') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('settings.index')" :active="request()->routeIs('settings.index')">
+                    {{ __('Beállítások') }}
+                    </x-nav-link>
 
                 </div>
             </div>
