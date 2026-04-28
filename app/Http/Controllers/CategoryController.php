@@ -36,4 +36,18 @@ class CategoryController extends Controller
 
         return redirect()->back()->with('success', 'Kategória törölve.');
     }
+
+    public function update(Request $request, Category $category)
+    {
+        if ($category->user_id !== auth()->id()) abort(403, 'Ehhez a művelethez nincs jogosultságod.');
+
+        $validated = $request->validate([
+            'category_name' => 'required|string|max:255',
+            'category_direction' => 'required|in:+,-,/',
+            'category_description' => 'nullable|string|max:255',
+        ]);
+
+        $category->update($validated);
+        return back()->with('success', 'Kategória frissítve.');
+    }
 }

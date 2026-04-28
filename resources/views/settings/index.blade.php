@@ -46,8 +46,14 @@
                     </thead>
                     <tbody>
                         @foreach($categories as $category)
-                            <tr class="bg-gray-50 border-b border-gray-200 font-semibold">
-                                <td class="p-3">{{ $category->category_name }}</td>
+                            <tr class="bg-gray-50 border-b border-gray-200 font-semibold" data-category="cat-{{ $category->category_id }}">
+                                <td class="p-3">
+                                    @if($category->subcategories->count() > 0)
+                                        <span class="table-expand cursor-pointer user-select-none mr-2"> ⯈ </span>
+                                    @else
+                                        <span class="mr-6"></span> @endif
+                                    {{ $category->category_name }}
+                                </td>
                                 <td class="p-3">
                                     @if($category->category_direction == '-')
                                         <span>(-) Kiadás</span>
@@ -57,41 +63,31 @@
                                         <span>(+) Bevétel</span>
                                     @endif
                                 </td>
-                                <td class="p-3 text-sm text-gray-600">
-                                    {{ $category->category_description ?? '-' }}
-                                </td>
+                                <td class="p-3 text-sm text-gray-600">{{ $category->category_description ?? '-' }}</td>
                                 <td class="p-3 text-right space-x-2">
-                                    <button onclick="window.openSubModal({{ $category->category_id }}, '{{ $category->category_name }}')" class="text-blue-600 hover:underline text-sm font-medium">
-                                        + Alkategória
-                                    </button>
-                                    <form action="{{ route('categories.destroy', $category->category_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törölni szeretnéd ezt a kategóriát? Ez az összes alkategóriáját is törölni fogja!')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900 font-medium text-sm">
-                                            Törlés
-                                        </button>
+                                    <button onclick="window.openSubModal({{ $category->category_id }}, '{{ $category->category_name }}')" class="text-blue-600 hover:underline text-sm font-medium">+ Alkategória</button>
+                                    <button onclick="window.openEditCategoryModal({{ json_encode($category) }})" class=" hover:underline text-sm font-medium">Szerkesztés</button>
+                                    <form action="{{ route('categories.destroy', $category->category_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törlöd?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:underline text-sm font-medium">Törlés</button>
                                     </form>
                                 </td>
                             </tr>
 
                             @foreach($category->subcategories as $sub)
-                                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <tr class="toggle_subcategory border-b border-gray-100 hover:bg-gray-50" 
+                                    data-parent="cat-{{ $category->category_id }}" 
+                                    style="display: none;">
                                     <td class="p-2 pl-12 text-sm text-gray-700 italic">
                                         <span class="text-gray-400">└─</span> {{ $sub->subcategory_name }}
                                     </td>
-                                    <td class="p-2 text-xs text-gray-400 uppercase tracking-widest">
-                                        Alkategória
-                                    </td>
-                                    <td class="p-2 text-sm text-gray-500">
-                                        {{ $sub->subcategory_description ?? '-' }}
-                                    </td>
-                                    <td class="p-2 text-right">
+                                    <td class="p-2 text-xs text-gray-400 uppercase tracking-widest">Alkategória</td>
+                                    <td class="p-2 text-sm text-gray-500">{{ $sub->subcategory_description ?? '-' }}</td>
+                                    <td class="p-2 text-right space-x-2">
+                                        <button onclick="window.openEditSubModal({{ json_encode($sub) }})" class="hover:underline text-xs font-medium">Szerkesztés</button>
                                         <form action="{{ route('subcategories.destroy', $sub->subcategory_id) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-400 hover:text-red-600 text-xs px-2 font-medium">
-                                                Törlés
-                                            </button>
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="text-red-400 hover:text-red-600 text-xs font-medium">Eltávolítás</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -133,7 +129,7 @@
 
 
     <!-- MODALS -->
-    <!-- Categories -->
+    <!-- Add categories -->
     <div id="categoryModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
         <div style="background:white; margin:10% auto; padding:20px; width:40%; border-radius:8px;">
             <h3 class="text-xl font-bold mb-4">Új kategória</h3>
@@ -163,7 +159,7 @@
         </div>
     </div>
 
-    <!-- Subcategories -->
+    <!-- Add subcategories -->
     <div id="subcategoryModal" class="modal-overlay" style="display:none;">
     <div class="modal-content">
         <span class="close-btn" onclick="window.closeSubModal()">&times;</span>
@@ -188,5 +184,60 @@
             </div>
         </form>
     </div>
-</div>
+    </div>
+
+    <!-- Edit categories -->
+    <div id="editCategoryModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div style="background:white; margin:10% auto; padding:20px; width:40%; border-radius:8px;">
+            <h3 class="text-xl font-bold mb-4">Kategória szerkesztése</h3>
+            <form id="editCategoryForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="mb-4">
+                    <label class="block mb-1">Kategória neve</label>
+                    <input type="text" name="category_name" id="edit_category_name" class="w-full border rounded p-2" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-1">Típus</label>
+                    <select name="category_direction" id="edit_category_direction" class="w-full border rounded p-2">
+                        <option value="-">Kiadás (-)</option>
+                        <option value="+">Bevétel (+)</option>
+                        <option value="/">Kétirányú (+/-)</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-1">Leírás</label>
+                    <input type="text" name="category_description" id="edit_category_description" class="w-full border rounded p-2">
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="closeEditCategoryModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Mégse</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Frissítés</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit subcategories -->
+    <div id="editSubcategoryModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div style="background:white; margin:10% auto; padding:20px; width:40%; border-radius:8px;">
+            <h3 class="text-xl font-bold mb-4">Alkategória szerkesztése</h3>
+            <form id="editSubcategoryForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="mb-4">
+                    <label class="block mb-1">Alkategória neve</label>
+                    <input type="text" name="subcategory_name" id="edit_subcategory_name" class="w-full border rounded p-2" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-1">Leírás</label>
+                    <input type="text" name="subcategory_description" id="edit_subcategory_description" class="w-full border rounded p-2">
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="closeEditSubModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Mégse</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Frissítés</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </x-app-layout>

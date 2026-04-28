@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const category = parentRow.getAttribute('data-category');
             
             // Find all sub-rows that belong to this category
-            const subRows = document.querySelectorAll(`tr.summary-table-subcategory[data-parent="${category}"]`);
+            const subRows = document.querySelectorAll(`tr.toggle_subcategory[data-parent="${category}"]`);
             
             subRows.forEach(row => {
                 // Toggle between hidden and visible

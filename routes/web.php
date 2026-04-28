@@ -51,9 +51,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
     Route::post('/settings/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::put('/settings/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
 
     Route::delete('/subcategories/{subcategory}', [SubcategoryController::class, 'destroy'])->name('subcategories.destroy');
     Route::post('/settings/subcategories', [SubcategoryController::class, 'store'])->name('subcategories.store');
+    Route::put('/settings/subcategories/{subcategory}', [SubcategoryController::class, 'update'])->name('subcategories.update');
+
 });
 
 require __DIR__.'/auth.php';

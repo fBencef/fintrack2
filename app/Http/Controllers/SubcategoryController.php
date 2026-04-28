@@ -35,4 +35,17 @@ class SubcategoryController extends Controller
 
         return redirect()->back()->with('success', 'Alkategória törölve.');
     }
+
+    public function update(Request $request, Subcategory $subcategory)
+    {
+        if ($subcategory->user_id !== auth()->id()) abort(403, 'Ehhez a művelethez nincs jogosultságod.');
+
+        $validated = $request->validate([
+            'subcategory_name' => 'required|string|max:255',
+            'subcategory_description' => 'nullable|string|max:255',
+        ]);
+
+        $subcategory->update($validated);
+        return back()->with('success', 'Alkategória frissítve.');
+    }
 }

@@ -67,7 +67,7 @@
 
                     <!-- Subcategory rows hidden until category is expanded) -->
                     @foreach($data['subs'] as $subName => $subMonths)
-                        <tr class="summary-table-subcategory" data-parent="{{ $categoryName }}" style="display: none;">
+                        <tr class="summary-table-subcategory toggle_subcategory" data-parent="{{ $categoryName }}" style="display: none;">
                             <td style="padding-left: 30px;">{{ $subName }}</td>
                             @foreach($months as $month)
                                 <td>{{ $subMonths[$month] > 0 ? number_format($subMonths[$month], 0, ',', ' ') . ' Ft' : '-' }}</td>
