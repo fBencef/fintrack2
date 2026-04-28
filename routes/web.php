@@ -7,6 +7,7 @@ use App\Http\Controllers\RecurringTransactionController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
+use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 
 // Dashboard as landing page
@@ -56,6 +57,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/subcategories/{subcategory}', [SubcategoryController::class, 'destroy'])->name('subcategories.destroy');
     Route::post('/settings/subcategories', [SubcategoryController::class, 'store'])->name('subcategories.store');
     Route::put('/settings/subcategories/{subcategory}', [SubcategoryController::class, 'update'])->name('subcategories.update');
+
+    Route::post('/settings/accounts', [AccountController::class, 'store'])->name('accounts.store');
+    Route::put('/settings/accounts/{account}', [AccountController::class, 'update'])->name('accounts.update');
+    Route::delete('/settings/accounts/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
 
 });
 

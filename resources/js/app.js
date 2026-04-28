@@ -6,6 +6,7 @@ import './create_transaction';
 import './event_listeners';
 import './create_recurring';
 import './create_category';
+import './create_account';
 
 import './bootstrap';
 import Alpine from 'alpinejs';

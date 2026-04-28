@@ -26,7 +26,6 @@
     <!-- CATEGORIES -->
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold">Kategóriák kezelése</h3>
@@ -101,29 +100,42 @@
     
     <!-- ACCOUNTS -->
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    <h3 class="text-lg font-medium text-gray-900">Pénztárcák / Számlák</h3>
-                    <p class="mt-1 text-sm text-gray-600">Itt kezelheted a rögzített bankszámláidat és készpénzes tárolóidat.</p>
-                    
-                    <ul class="mt-4 divide-y">
-                        @foreach($accounts as $account)
-                            <li class="py-2 flex justify-between">{{ $account->account_name }} <span>{{ $account->account_balance }}</span></li>
-                        @endforeach
-                    </ul>
-                    <x-secondary-button class="mt-4">+ Új számla</x-secondary-button>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold">Pénztárcák és Számlák</h3>
+                    <button onclick="window.openCreateAccountModal()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm">
+                        + Új számla
+                    </button>
                 </div>
-            </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    <h3 class="text-lg font-medium text-gray-900">Kategóriák</h3>
-                    <p class="mt-1 text-sm text-gray-600">Tranzakcióid csoportosításához használt kategóriák kezelése.</p>
-                    </div>
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100 text-left border-b-2 border-gray-200">
+                            <th class="p-3 w-1/2">Megnevezés</th>
+                            <th class="p-3">Pénznem</th>
+                            <th class="p-3 text-right">Műveletek</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($accounts as $account)
+                            <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                <td class="p-3 font-semibold text-gray-800">{{ $account->account_name }}</td>
+                                <td class="p-3 text-gray-600">
+                                    {{ $account->currency->currency_name }} ({{ $account->currency->currency_sign }})
+                                </td>
+                                <td class="p-3 text-right space-x-2">
+                                    <button onclick="window.openEditAccountModal({{ json_encode($account) }})" class="text-yellow-600 hover:underline text-sm font-medium">Szerkesztés</button>
+                                    <form action="{{ route('accounts.destroy', $account->account_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törlöd ezt a számlát? Figyelem: A törlés befolyásolhatja a kapcsolódó tranzakciókat!')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:underline text-sm font-medium">Törlés</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-
         </div>
     </div>
 
@@ -235,6 +247,55 @@
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="closeEditSubModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Mégse</button>
                     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Frissítés</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add accounts -->
+    <div id="accountModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div style="background:white; margin:10% auto; padding:20px; width:35%; border-radius:8px;">
+            <h3 class="text-xl font-bold mb-4">Új számla</h3>
+            <form action="{{ route('accounts.store') }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label class="block mb-1">Megnevezés</label>
+                    <input type="text" name="account_name" class="w-full border rounded p-2" placeholder="pl. Készpénz, Revolut" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-1">Pénznem</label>
+                    <select name="currency_id" class="w-full border rounded p-2">
+                        @foreach($currencies as $currency)
+                            <option value="{{ $currency->currency_id }}">{{ $currency->currency_name }} ({{ $currency->currency_sign }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="window.closeAccountModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Mégse</button>
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Mentés</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Edit accounts -->
+    <div id="editAccountModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div style="background:white; margin:10% auto; padding:20px; width:35%; border-radius:8px;">
+            <h3 class="text-xl font-bold mb-4">Számla szerkesztése</h3>
+            
+            <form id="editAccountForm" method="POST">
+                @csrf
+                @method('PUT')
+                
+                <div class="mb-4">
+                    <label class="block mb-1 font-medium text-gray-700">Megnevezés</label>
+                    <input type="text" name="account_name" id="edit_account_name" class="w-full border rounded p-2 focus:ring focus:ring-blue-200 outline-none" required>
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="window.closeEditAccountModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">Mégse</button>
+                    <button type="submit" class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 transition">Frissítés</button>
                 </div>
             </form>
         </div>
