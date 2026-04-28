@@ -104,7 +104,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold">Pénztárcák és Számlák</h3>
-                    <button onclick="window.openCreateAccountModal()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm">
+                    <button onclick="window.openCreateAccountModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         + Új számla
                     </button>
                 </div>
@@ -125,7 +125,7 @@
                                     {{ $account->currency->currency_name }} ({{ $account->currency->currency_sign }})
                                 </td>
                                 <td class="p-3 text-right space-x-2">
-                                    <button onclick="window.openEditAccountModal({{ json_encode($account) }})" class="text-yellow-600 hover:underline text-sm font-medium">Szerkesztés</button>
+                                    <button onclick="window.openEditAccountModal({{ json_encode($account) }})" class="hover:underline text-sm font-medium">Szerkesztés</button>
                                     <form action="{{ route('accounts.destroy', $account->account_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törlöd ezt a számlát? Figyelem: A törlés befolyásolhatja a kapcsolódó tranzakciókat!')">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:underline text-sm font-medium">Törlés</button>
@@ -272,7 +272,7 @@
                 </div>
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="window.closeAccountModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Mégse</button>
-                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Mentés</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Mentés</button>
                 </div>
             </form>
         </div>
@@ -295,7 +295,7 @@
 
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="window.closeEditAccountModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">Mégse</button>
-                    <button type="submit" class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 transition">Frissítés</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-yellow-700 transition">Frissítés</button>
                 </div>
             </form>
         </div>
