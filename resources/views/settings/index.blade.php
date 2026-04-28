@@ -46,28 +46,56 @@
                     </thead>
                     <tbody>
                         @foreach($categories as $category)
-                            <tr class="border-b">
+                            <tr class="bg-gray-50 border-b border-gray-200 font-semibold">
                                 <td class="p-3">{{ $category->category_name }}</td>
                                 <td class="p-3">
-                                        @if($category->category_direction == '-')
-                                            (-) Kiadás
-                                        @elseif($category->category_direction == '/')
-                                            (+/-) Kétirányú
-                                        @else
-                                            (+) Bevétel
-                                        @endif
+                                    @if($category->category_direction == '-')
+                                        <span>(-) Kiadás</span>
+                                    @elseif($category->category_direction == '/')
+                                        <span>(+/-) Kétirányú</span>
+                                    @else
+                                        <span>(+) Bevétel</span>
+                                    @endif
                                 </td>
-                                <td class="p-3">{{ $category?->category_description ?? '-' }}</td>
-                                <td class="p-3">
-                                    <form action="{{ route('categories.destroy', $category->category_id) }}" method="POST" onsubmit="return confirm('Biztosan törölni szeretnéd ezt a kategóriát? Ez az összes alkategóriáját is törölni fogja!')">
-                                    @csrf
-                                    @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900 font-medium">
+                                <td class="p-3 text-sm text-gray-600">
+                                    {{ $category->category_description ?? '-' }}
+                                </td>
+                                <td class="p-3 text-right space-x-2">
+                                    <button onclick="window.openSubModal({{ $category->category_id }}, '{{ $category->category_name }}')" class="text-blue-600 hover:underline text-sm font-medium">
+                                        + Alkategória
+                                    </button>
+                                    <form action="{{ route('categories.destroy', $category->category_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törölni szeretnéd ezt a kategóriát? Ez az összes alkategóriáját is törölni fogja!')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900 font-medium text-sm">
                                             Törlés
                                         </button>
                                     </form>
                                 </td>
                             </tr>
+
+                            @foreach($category->subcategories as $sub)
+                                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                    <td class="p-2 pl-12 text-sm text-gray-700 italic">
+                                        <span class="text-gray-400">└─</span> {{ $sub->subcategory_name }}
+                                    </td>
+                                    <td class="p-2 text-xs text-gray-400 uppercase tracking-widest">
+                                        Alkategória
+                                    </td>
+                                    <td class="p-2 text-sm text-gray-500">
+                                        {{ $sub->subcategory_description ?? '-' }}
+                                    </td>
+                                    <td class="p-2 text-right">
+                                        <form action="{{ route('subcategories.destroy', $sub->subcategory_id) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-400 hover:text-red-600 text-xs px-2 font-medium">
+                                                Törlés
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endforeach
                     </tbody>
                 </table>
@@ -134,4 +162,31 @@
             </form>
         </div>
     </div>
+
+    <!-- Subcategories -->
+    <div id="subcategoryModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="window.closeSubModal()">&times;</span>
+        <h3 class="text-xl font-bold mb-4">Új alkategória</h3>
+        <p class="text-sm text-gray-600 mb-4">Fő kategória: <span id="sub_parent_name" class="font-bold"></span></p>
+        
+        <form action="{{ route('subcategories.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="category_id" id="parent_category_id">
+            
+            <div class="mb-4">
+                <x-input-label for="subcategory_name" value="Alkategória neve" />
+                <x-text-input id="subcategory_name" name="subcategory_name" class="block mt-1 w-full" required />
+                <br>
+                <x-input-label for="subcategory_description" value="Leírás" />
+                <x-text-input id="subcategory_description" name="subcategory_description" class="block mt-1 w-full" />
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <x-secondary-button type="button" onclick="window.closeSubModal()">Mégse</x-secondary-button>
+                <x-primary-button type="submit">Mentés</x-primary-button>
+            </div>
+        </form>
+    </div>
+</div>
 </x-app-layout>

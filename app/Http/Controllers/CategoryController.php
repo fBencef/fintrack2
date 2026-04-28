@@ -11,7 +11,7 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'category_name' => 'required|string|max:255',
-            'category_direction' => 'required|in:+,-',
+            'category_direction' => 'required|in:+,-,/',
             'category_description' => 'nullable|string|max:255',
         ]);
 
