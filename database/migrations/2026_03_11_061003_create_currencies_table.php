@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('currency_name');
             $table->string('currency_sign');
             $table->string('currency_abbreviation', 3);
-            $table->boolean('is_default_currency');
+            $table->boolean('is_default_currency')->default(false);
             $table->timestamps(); // Adds created_at and updated_at automatically
         });
     }

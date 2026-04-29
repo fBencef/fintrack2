@@ -28,7 +28,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-bold">Kategóriák kezelése</h3>
+                    <h3 class="text-lg font-bold">Kategóriák</h3>
                     <button onclick="openCreateCategoryModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         + Új kategória
                     </button>
@@ -103,7 +103,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-bold">Pénztárcák és Számlák</h3>
+                    <h3 class="text-lg font-bold">Számlák</h3>
                     <button onclick="window.openCreateAccountModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         + Új számla
                     </button>
@@ -111,7 +111,7 @@
 
                 <table class="w-full border-collapse">
                     <thead>
-                        <tr class="bg-gray-100 text-left border-b-2 border-gray-200">
+                        <tr class="bg-gray-100 text-left">
                             <th class="p-3 w-1/2">Megnevezés</th>
                             <th class="p-3">Pénznem</th>
                             <th class="p-3 text-right">Műveletek</th>
@@ -126,10 +126,63 @@
                                 </td>
                                 <td class="p-3 text-right space-x-2">
                                     <button onclick="window.openEditAccountModal({{ json_encode($account) }})" class="hover:underline text-sm font-medium">Szerkesztés</button>
-                                    <form action="{{ route('accounts.destroy', $account->account_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törlöd ezt a számlát? Figyelem: A törlés befolyásolhatja a kapcsolódó tranzakciókat!')">
+                                    <form action="{{ route('accounts.destroy', $account->account_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törlöd ezt a számlát? Figyelem: A kapcsolódó tranzakciók is törlődnek!')">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:underline text-sm font-medium">Törlés</button>
                                     </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- CURRENCIES -->
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold">Pénznemek</h3>
+                    <button onclick="window.openCreateCurrencyModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        + Új pénznem
+                    </button>
+                </div>
+
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100 text-left">
+                            <th class="p-3">Név</th>
+                            <th class="p-3">Rövidítés</th>
+                            <th class="p-3">Jel</th>
+                            <th class="p-3 text-center">Alapértelmezett</th>
+                            <th class="p-3 text-right">Műveletek</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($currencies as $currency)
+                            <tr class="bg-gray-50 border-b border-gray-200 font-semibold">
+                                <td class="p-3">{{ $currency->currency_name }}</td>
+                                <td class="p-3 font-mono">{{ $currency->currency_abbreviation }}</td>
+                                <td class="p-3 font-bold">{{ $currency->currency_sign }}</td>
+                                <td class="p-3 text-center">
+                                    @if($currency->is_default_currency)
+                                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 font-bold">ALAPÉRTELMEZETT</span>
+                                    @else
+                                        <span class="text-gray-300">-</span>
+                                    @endif
+                                </td>
+                                <td class="p-3 text-right space-x-2">
+                                    <button onclick="window.openEditCurrencyModal({{ json_encode($currency) }})" class="text-600 hover:underline text-sm font-medium">Szerkesztés</button>
+                                    @if(!$currency->is_default_currency)
+                                    <form action="{{ route('currencies.destroy', $currency->currency_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törlöd?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:underline text-sm font-medium">Törlés</button>
+                                    </form>
+                                    @else
+                                    <button type="submit" class="text-gray-600 text-sm font-medium">Törlés</button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -296,6 +349,80 @@
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="window.closeEditAccountModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">Mégse</button>
                     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-yellow-700 transition">Frissítés</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add currency -->
+    <div id="currencyModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div style="background:white; margin:10% auto; padding:20px; width:35%; border-radius:8px;">
+            <h3 class="text-xl font-bold mb-4">Új pénznem</h3>
+            <form action="{{ route('currencies.store') }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label class="block mb-1">Név</label>
+                    <input type="text" name="currency_name" class="w-full border rounded p-2" required placeholder="pl. Magyar forint">
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block mb-1">Rövidítés</label>
+                        <input type="text" name="currency_abbreviation" class="w-full border rounded p-2" required placeholder="pl. HUF">
+                    </div>
+                    <div>
+                        <label class="block mb-1">Jel</label>
+                        <input type="text" name="currency_sign" class="w-full border rounded p-2" required placeholder="pl. Ft">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="is_default_currency" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm">
+                        <span class="ml-2">Legyen ez az alapértelmezett</span>
+                    </label>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="window.closeCurrencyModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Mégse</button>
+                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">Mentés</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit currency -->
+    <div id="editCurrencyModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+        <div style="background:white; margin:10% auto; padding:20px; width:35%; border-radius:8px;">
+            <h3 class="text-xl font-bold mb-4">Pénznem szerkesztése</h3>
+            
+            <form id="editCurrencyForm" method="POST">
+                @csrf
+                @method('PUT')
+                
+                <div class="mb-4">
+                    <label class="block mb-1">Pénznem neve</label>
+                    <input type="text" name="currency_name" id="edit_currency_name" class="w-full border rounded p-2 focus:ring focus:ring-indigo-200 outline-none" required>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block mb-1">Rövidítés (pl. EUR)</label>
+                        <input type="text" name="currency_abbreviation" id="edit_currency_abbreviation" class="w-full border rounded p-2 focus:ring focus:ring-indigo-200 outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block mb-1">Jel (pl. €)</label>
+                        <input type="text" name="currency_sign" id="edit_currency_sign" class="w-full border rounded p-2 focus:ring focus:ring-indigo-200 outline-none" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="is_default_currency" id="edit_is_default_currency" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+                        <span class="ml-2">Legyen ez az alapértelmezett</span>
+                    </label>
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="window.closeEditCurrencyModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">Mégse</button>
+                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">Frissítés</button>
                 </div>
             </form>
         </div>

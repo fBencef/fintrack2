@@ -8,6 +8,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\CurrencyController;
 use Illuminate\Support\Facades\Route;
 
 // Dashboard as landing page
@@ -61,6 +62,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/settings/accounts', [AccountController::class, 'store'])->name('accounts.store');
     Route::put('/settings/accounts/{account}', [AccountController::class, 'update'])->name('accounts.update');
     Route::delete('/settings/accounts/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
+
+    Route::post('/settings/currencies', [CurrencyController::class, 'store'])->name('currencies.store');
+    Route::put('/settings/currencies/{currency}', [CurrencyController::class, 'update'])->name('currencies.update');
+    Route::delete('/settings/currencies/{currency}', [CurrencyController::class, 'destroy'])->name('currencies.destroy');
 
 });
 
