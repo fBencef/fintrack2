@@ -26,6 +26,7 @@ class User extends Authenticatable
         'given_name',
         'email',
         'password',
+        'dashboard_preferences',
     ];
 
     /**
@@ -38,6 +39,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $attributes = [
+        'dashboard_preferences' => '{"monthly_spending":true,"category_chart":true,"recent_transactions":true}',
+    ];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -45,9 +50,16 @@ class User extends Authenticatable
      */
     protected function casts(): array
     {
+
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'dashboard_preferences' => 'array',
         ];
+    }
+
+    public function prefers(string $widget): bool
+    {
+        return (bool) ($this->dashboard_preferences[$widget] ?? false);
     }
 }

@@ -67,6 +67,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/settings/currencies/{currency}', [CurrencyController::class, 'update'])->name('currencies.update');
     Route::delete('/settings/currencies/{currency}', [CurrencyController::class, 'destroy'])->name('currencies.destroy');
 
+    Route::patch('/settings/preferences', [SettingsController::class, 'updatePreferences'])->name('settings.update_preferences');
+
 });
 
 require __DIR__.'/auth.php';

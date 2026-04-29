@@ -192,6 +192,58 @@
         </div>
     </div>
 
+    <!-- DASHBOARD ITEMS -->
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <h3 class="text-lg font-bold mb-2">Vezérlőpult testreszabása</h3>
+                <p class="text-sm text-gray-600 mb-6">Kapcsold be azokat a kártyákat, amelyeket látni szeretnél a főoldalon.</p>
+
+                <form action="{{ route('settings.update_preferences') }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition">
+                            <input type="checkbox" name="prefs[monthly_spending]" value="1" 
+                                {{ auth()->user()->prefers('monthly_spending') ? 'checked' : '' }} 
+                                class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                            <div class="ml-4">
+                                <span class="block font-medium text-gray-900">Havi költés</span>
+                                <span class="block text-xs text-gray-500">Az aktuális hónap összesített kiadásai.</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition">
+                            <input type="checkbox" name="prefs[category_chart]" value="1" 
+                                {{ auth()->user()->prefers('category_chart') ? 'checked' : '' }} 
+                                class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                            <div class="ml-4">
+                                <span class="block font-medium text-gray-900">Kategória megoszlás</span>
+                                <span class="block text-xs text-gray-500">Grafikus kimutatás a kiadási kategóriákról.</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition">
+                            <input type="checkbox" name="prefs[recent_transactions]" value="1" 
+                                {{ auth()->user()->prefers('recent_transactions') ? 'checked' : '' }} 
+                                class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                            <div class="ml-4">
+                                <span class="block font-medium text-gray-900">Legutóbbi tranzakciók</span>
+                                <span class="block text-xs text-gray-500">A legfrissebb pénzmozgások listája.</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="mt-8 flex justify-end">
+                        <x-primary-button>Beállítások mentése</x-primary-button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 
     <!-- MODALS -->
     <!-- Add categories -->

@@ -35,4 +35,25 @@ class SettingsController extends Controller
 
         return redirect()->back()->with('success', 'Kategória létrehozva.');
     }
+
+    public function updatePreferences(Request $request)
+    {
+        $user = $request->user();
+        
+        // Get array or empty if nothing checked
+        $submittedPrefs = $request->input('prefs', []);
+
+        // All possible widgets go here to and get 'false' if unchecked
+        $newPreferences = [
+            'monthly_spending'    => isset($submittedPrefs['monthly_spending']),
+            'category_chart'      => isset($submittedPrefs['category_chart']),
+            'recent_transactions' => isset($submittedPrefs['recent_transactions']),
+        ];
+
+        $user->update([
+            'dashboard_preferences' => $newPreferences
+        ]);
+
+        return back()->with('success', 'A vezérlőpult beállításai frissültek.');
+    }
 }

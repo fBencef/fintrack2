@@ -5,6 +5,35 @@
         </h2>
     </x-slot>
 
+    <!--Dynamic dashboard widget part-->
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                @if(auth()->user()->prefers('monthly_spending'))
+                    <x-dashboard-card title="Havi költés" id="monthly-spending">
+                        <div class="text-3xl font-bold text-red-600">
+                            PLACEHOLDER - HAVI KÖLTÉS
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">Az előző hónaphoz képest: +5%</p>
+                    </x-dashboard-card>
+                @endif
+
+                @if(auth()->user()->prefers('category_chart'))
+                    <x-dashboard-card title="Költési kategóriák" id="category-chart">
+                        <div class="h-48 bg-gray-100 flex items-center justify-center rounded italic text-gray-400">
+                            PLACEHOLDER - KATEGÓRIÁK
+                        </div>
+                    </x-dashboard-card>
+                @endif
+                
+
+
+            </div>
+        </div>
+    </div>
+
+    <!--Static older part. Felt quick, might delete later-->
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
