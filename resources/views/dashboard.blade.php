@@ -12,10 +12,21 @@
                 
                 @if(auth()->user()->prefers('monthly_spending'))
                     <x-dashboard-card title="Havi költés" id="monthly-spending">
-                        <div class="text-3xl font-bold text-red-600">
-                            PLACEHOLDER - HAVI KÖLTÉS
+                        <div class="py-2">
+                            <div class="text-4xl font-bold text-red-600">
+                            <p class="text-sm text-gray-500 mt-2 tracking-wide uppercase font-semibold">
+                                {{ $currentMonthLabel }}
+                            </p>
+                                {{ number_format($monthlyTotal, 0, ',', ' ') }} 
+                                <span class="text-xl text-gray-500 font-medium">
+                                    {{ $defaultCurrency->currency_sign ?? 'Ft' }}
+                                </span>
+                            </div>
                         </div>
-                        <p class="text-sm text-gray-500 mt-2">Az előző hónaphoz képest: +5%</p>
+
+                        <x-slot name="cardActions">
+                            <a href="{{ route('transactions.expenses') }}" class="text-xs text-blue-600 hover:underline text-right">Részletek ➔</a>
+                        </x-slot>
                     </x-dashboard-card>
                 @endif
 

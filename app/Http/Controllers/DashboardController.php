@@ -14,13 +14,28 @@ use function PHPUnit\Framework\isNull;
 class DashboardController extends Controller
 {
     public function index() {    
+        $user = auth()->user();
+        $now = now();
+    
         $pendingTransactions =  Transaction::where('transaction_status', 'pending')
-                ->with(['currency', 'category'])
-                ->orderBy('transaction_date_completed', 'asc')
-                ->get();
+            ->with(['currency', 'category'])
+            ->orderBy('transaction_date_completed', 'asc')
+            ->get();
 
-        $otherData = 'placeholder for later modules';
+        $defaultCurrency = Currency::where('user_id', $user->user_id)
+            ->where('is_default_currency', true)
+            ->first() ?? Currency::where('user_id', $user->user_id)->first();
 
-        return view('dashboard', compact('pendingTransactions', 'otherData'));
+        $monthlyTotal = Transaction::where('user_id', $user->user_id)
+            ->whereMonth('transaction_date_completed', $now->month)
+            ->whereYear('transaction_date_completed', $now->year)
+            ->where('transaction_amount', '<', 0)
+            ->sum('transaction_amount');
+
+        $monthlyTotal = abs($monthlyTotal);
+
+        $currentMonthLabel = $now->format('Y. m.');
+
+        return view('dashboard', compact('pendingTransactions', 'monthlyTotal', 'defaultCurrency', 'currentMonthLabel'));
     }
 }
