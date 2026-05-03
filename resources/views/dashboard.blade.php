@@ -23,6 +23,17 @@
         </div>
     @endif
 
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <x-dashboard-month-selector 
+                        :selectedMonth="$selectedMonth" 
+                        :prevMonth="$prevMonth" 
+                        :nextMonth="$nextMonth" 
+                        :isCurrentMonth="$isCurrentMonth" 
+            />
+        </div>
+    </div>
+
     <!--Dynamic dashboard widget part-->
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -52,9 +63,7 @@
                 <!--CATEGORIES-->
                 @if(auth()->user()->prefers('category_chart'))
                     <x-dashboard-card title="Költési kategóriák" id="category-chart">
-                        <div class="h-48 bg-gray-100 flex items-center justify-center rounded italic text-gray-400">
-                            PLACEHOLDER - KATEGÓRIÁK
-                        </div>
+                        <x-category-chart :data="$spendingCategories" />
                     </x-dashboard-card>
                 @endif
 
@@ -62,8 +71,6 @@
                 @if(auth()->user()->prefers('recent_transactions'))
                     <x-recent-transactions-card :transactions="$recentTransactions" />
                 @endif
-                
-
 
             </div>
         </div>
