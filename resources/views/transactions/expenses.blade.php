@@ -79,7 +79,7 @@
             </tbody>
         </table>
 
-        <div class="recent_transactions_box" style="flex: 1;">
+        <!--div class="recent_transactions_box" style="flex: 1;">
             <h3>Legutóbbi tranzakciók</h3>
             <ul class="recent_transactions_list">
                 @foreach($latestExpenses as $expense)
@@ -99,7 +99,12 @@
                     </li>
                 @endforeach
             </ul>
+        </div-->
+
+        <div class="recent_transactions_box" style="flex: 1;">
+            <x-recent-transactions-card :transactions="$latestExpensesNew" title="Legutóbbi kiadások" />
         </div>
+
     </div>
 
 

@@ -43,7 +43,7 @@ class SettingsController extends Controller
         // Get array or empty if nothing checked
         $submittedPrefs = $request->input('prefs', []);
 
-        // All possible widgets go here to and get 'false' if unchecked
+        // All widgets go here to get 'false' if unchecked
         $newPreferences = [
             'monthly_spending'    => isset($submittedPrefs['monthly_spending']),
             'category_chart'      => isset($submittedPrefs['category_chart']),

@@ -112,8 +112,15 @@ class TransactionController extends Controller
 
         //Getting the latest transactions
         $latestExpenses = $this->latest_transactions(5, true);
+
+        $latestExpensesNew = Transaction::where('user_id', auth()->id())
+            ->where('transaction_amount', '<', 0)
+            ->with(['category', 'subcategory', 'currency'])
+            ->latest('transaction_date_completed')
+            ->take(5)
+            ->get();
         
-        return view('transactions.expenses', compact('pivotData','months','existingYears', 'selectedYear','latestExpenses'));
+        return view('transactions.expenses', compact('pivotData','months','existingYears', 'selectedYear','latestExpenses','latestExpensesNew'));
     }
 
     public function incomes(Request $request) {
@@ -170,8 +177,15 @@ class TransactionController extends Controller
 
         //Getting the latest transactions
         $latestIncomes = $this->latest_transactions(5, false);
+
+        $latestIncomesNew = Transaction::where('user_id', auth()->id())
+            ->where('transaction_amount', '>', 0)
+            ->with(['category', 'subcategory', 'currency'])
+            ->latest('transaction_date_completed')
+            ->take(5)
+            ->get();
         
-        return view('transactions.incomes', compact('pivotData','months','existingYears', 'selectedYear','latestIncomes'));
+        return view('transactions.incomes', compact('pivotData','months','existingYears', 'selectedYear','latestIncomes', 'latestIncomesNew'));
     }
 
     public function show(Transaction $transaction) {
