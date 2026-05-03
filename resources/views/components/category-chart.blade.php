@@ -11,7 +11,7 @@
 
         const chartData = @json($data);
 
-        // Standard colors categories
+        // Standard colors
         const colors = [
             '#4F46E5', // Indigo
             '#10B981', // Emerald

@@ -41,16 +41,18 @@ class DashboardController extends Controller
             ->whereMonth('transaction_date_completed', $date->month)
             ->whereYear('transaction_date_completed', $date->year)
             ->where('transaction_amount', '<', 0)
+            ->where('transaction_status','confirmed')
             ->sum('transaction_amount');
 
         $monthlyTotal = abs($monthlyTotal);
 
-        $currentMonthLabel = $now->format('Y. m.');
+        $currentMonthLabel = $date->format('Y. m.');
 
         // Recent transactions
         $recentTransactions = Transaction::where('user_id', $user->user_id)
             ->with(['category', 'subcategory','currency'])
-            ->orderBy('transaction_date_completed', 'desc')
+            ->orderBy('transaction_id', 'desc')
+            ->where('transaction_status','confirmed')
             ->take(5)
             ->get();
 
@@ -59,6 +61,7 @@ class DashboardController extends Controller
             ->whereMonth('transaction_date_completed', $date->month)
             ->whereYear('transaction_date_completed', $date->year)
             ->where('transaction_amount', '<', 0)
+            ->where('transaction_status','confirmed')
             ->join('categories', 'transactions.category_id', '=', 'categories.category_id')
             ->selectRaw('categories.category_name, SUM(ABS(transactions.transaction_amount)) as total')
             ->groupBy('categories.category_name')

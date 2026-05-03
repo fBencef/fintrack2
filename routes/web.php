@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 // Dashboard as landing page
@@ -68,6 +69,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/settings/currencies/{currency}', [CurrencyController::class, 'destroy'])->name('currencies.destroy');
 
     Route::patch('/settings/preferences', [SettingsController::class, 'updatePreferences'])->name('settings.update_preferences');
+
+    //Notifications
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::delete('/notifications/{noticifaction}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 
 });
 

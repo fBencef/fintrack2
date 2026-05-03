@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use App\Models\Transaction;
 use App\Models\RecurringTransaction;
 use Carbon\Carbon;
+use App\Notifications\PendingTransactionNotification;
+use App\Models\User;
 
 class ProcessRecurringTransactions extends Command
 {
@@ -55,6 +57,12 @@ class ProcessRecurringTransactions extends Command
             'transaction_status' => 'pending',
             'is_split' => false,
         ]);
+
+        //Trigger notification
+        $user = User::find($recurring->user_id);
+        if ($user) {
+            $user->notify(new PendingTransactionNotification());
+        }
 
         //Calculate the next occurence
         $nextOccurence = match($recurring->frequency_type) {
