@@ -23,7 +23,7 @@
                                 <span class="text-xs text-gray-400">{{ $transaction->subcategory->subcategory_name }}</span>
                             @endif
                         </td>
-                        <td class="py-3 text-right font-bold {{ $transaction->transaction_amount < 0 ? 'text-red-500' : 'text-green-500' }}">
+                        <td class="py-3 text-right font-bold {{ $transaction->transaction_amount < 0 ? 'text-red-500' : 'text-emerald-600' }}">
                             {{ number_format($transaction->transaction_amount, 0, ',', ' ') }} {{ $transaction->currency->currency_sign }} 
                         </td>
                         <td class="py-3 text-right">
