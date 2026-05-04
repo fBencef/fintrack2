@@ -1,6 +1,11 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 <x-app-layout title="Recurring">
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Ismétlődő tranzakciók') }}
+        </h2>
+    </x-slot>
 
     @if(session('success'))
     <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 20px; border-radius: 5px;">
@@ -18,55 +23,119 @@
     </div>
     @endif
 
-    <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2>Ismétlődő Tranzakciók</h2>
-            <button type="button" onclick="openCreateRecurringModal()" class="btn-primary">
-                + Új Ismétlődés
-            </button>
-        </div>
+    <div class="py-12">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="p-6 bg-white border border-gray-100 shadow-sm sm:rounded-2xl">
+                
+                <!-- Header -->
+                <div class="flex flex-col gap-4 mb-8 md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <!--h3 class="text-lg font-bold text-gray-900">Ismétlődő tranzakciók kezelése</h3-->
+                    </div>
+                    
+                    <button type="button" onclick="openCreateRecurringModal()" 
+                        class="inline-flex items-center px-5 py-2.5 bg-green-700 hover:bg-green-800 text-white text-sm font-bold rounded transition-all shadow-sm hover:shadow-lg active:scale-95">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Új ismétlődés
+                    </button>
+                </div>
 
-        <table class="pivot-table" style="width: 100%; margin-top: 20px;">
-            <thead>
-                <tr>
-                    <th>Megnevezés</th>
-                    <th>Összeg</th>
-                    <th>Gyakoriság</th>
-                    <th>Következő dátum</th>
-                    <th>Típus</th>
-                    <th>Műveletek</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($recurrings as $rec)
-                    <tr>
-                        <td><strong>{{ $rec->recurring_name }}</strong><br>
-                            <small>{{ $rec->category->category_name }}</small>
-                        </td>
-                        <td>{{ number_format($rec->recurring_amount, 0, ',', ' ') }} {{ $rec->currency->currency_code }}</td>
-                        <td>
-                            {{ $rec->frequency_intervall }}. 
-                            {{ match($rec->frequency_type) {
-                                'daily' => 'naponta',
-                                'weekly' => 'hetente',
-                                'monthly' => 'havonta',
-                                'yearly' => 'évente',
-                                default => $rec->frequency_type
-                            } }}
-                        </td>
-                        <td>{{ $rec->next_execution_date }}</td>
-                        <td>
-                            <span class="badge {{ $rec->recurring_is_prediction ? 'prediction' : 'fixed' }}">
-                                {{ $rec->recurring_is_prediction ? 'Predikció' : 'Fix' }}
-                            </span>
-                        </td>
-                        <td>
-                            <button onclick="editRecurring({{ $rec->recurring_id }})">Szerkesztés</button>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                <!-- Table Wrapper -->
+                <div class="overflow-x-auto border border-gray-100">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-400 uppercase tracking-widest">Megnevezés</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-400 uppercase tracking-widest">Összeg</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-400 uppercase tracking-widest">Gyakoriság</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-400 uppercase tracking-widest">Következő esedékesség</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-400 uppercase tracking-widest">Típus</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-400 uppercase tracking-widest">Műveletek</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-100">
+                            @forelse($recurrings as $recurring)
+                                <tr class="hover:bg-gray-50 transition-colors group">
+                                    <!-- Name and category -->
+                                    <td class="px-6 py-4">
+                                        <div class="font-bold text-gray-900">{{ $recurring->recurring_name }}</div>
+                                        <div class="text-xs text-gray-500">{{ $recurring->category->category_name }} / 
+                                        {{ $recurring->subcategory?->subcategory_name ?? '-' }}</div>
+                                    </td>
+                                    
+                                    <!-- Amount -->
+                                    <td class="px-6 py-4 text-lg font-bold text-gray-900">
+                                        {{ number_format(abs($recurring->recurring_amount), 0, ',', ' ') }}
+                                        <span class="text-base font-normal text-gray-700">{{ $recurring->currency->currency_sign }}</span>
+                                    </td>
+
+                                    <!-- Frequency -->
+                                    <td class="px-6 py-4 text-base text-gray-900">
+                                        {{ $recurring->frequency_intervall }} 
+                                        {{ match($recurring->frequency_type) {
+                                            'daily' => 'naponta',
+                                            'weekly' => 'hetente',
+                                            'monthly' => 'havonta',
+                                            'yearly' => 'évente',
+                                            default => $recurring->frequency_type
+                                        } }}
+                                    </td>
+
+                                    <!-- Next Date -->
+                                    <td class="px-6 py-4 text-base font-medium text-gray-900">
+                                        {{ date('Y. m. d.', strtotime($recurring->next_execution_date)) }} | 
+                                        @if($recurring->next_execution_date->isPast() && !$recurring->next_execution_date->isToday())
+                                            <span class="text-red-500 font-bold">Késésben</span>
+                                        @elseif($recurring->next_execution_date->isToday())
+                                            <span class="text-amber-600 font-bold">Ma</span>   
+                                        @elseif($recurring->next_execution_date->isTomorrow())
+                                            <span class="text-emerald-600 font-bold">Holnap</span> 
+                                        @elseif($recurring->next_execution_date->isCurrentWeek())
+                                            <span class="text-indigo-500">Ezen a héten</span>  
+                                        @else
+                                            <span class="text-gray-400">
+                                                {{ ceil(now()->diffInDays($recurring->next_execution_date) / 7) }} hét múlva
+                                            </span>
+                                        @endif
+                                    </td>
+
+                                    <!-- Type -->
+                                    <td class="px-6 py-4 text-center">
+                                        @if($recurring->recurring_is_prediction)
+                                            <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm bg-amber-100 text-amber-700 border border-amber-200">
+                                                Predikció
+                                            </span>
+                                        @else
+                                            <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm bg-emerald-100 text-emerald-700 border border-blue-200">
+                                                Fix
+                                            </span>
+                                        @endif
+                                    </td>
+
+                                    <!-- Actions -->
+                                    <td class="px-6 py-4 text-center text-sm font-medium">
+                                        <button onclick="editRecurring({{ $recurring->recurring_id }})" 
+                                            class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-lg">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="px-6 py-10 text-center text-gray-500 italic">
+                                        Nincsenek beállított ismétlődő tranzakciók.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="recurringModal" class="modal-overlay" style="display:none;">

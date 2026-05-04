@@ -25,6 +25,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Recurring transactions
     Route::resource('recurring', RecurringTransactionController::class);
+    Route::get('/recurring/{id}', [RecurringTransactionController::class, 'show'])->name('recurring.show');
+    Route::put('/recurring/{id}', [RecurringTransactionController::class, 'update'])->name('recurring.update');
 
     // Filtered transaction views
     Route::get('/transactions/all', [TransactionController::class, 'all'])->name('transactions.all');
@@ -41,7 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Approval
     Route::patch('/transactions/{transaction}/approve', [TransactionController::class, 'approve'])->name('transactions.approve');
 
-    // API route for subcategories
+    // Subcategories
     Route::get('/api/categories/{category}/subcategories', [TransactionController::class, 'getSubcategories']);
 
     // Breeze Profile Routes (User Settings)

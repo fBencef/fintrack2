@@ -112,7 +112,7 @@
                                                     {{ $transaction->transaction_id }}
                                                 </button>
                                             </td>
-                                            <td class="px-4 py-4 text-sm font-bold whitespace-nowrap {{ $transaction->category->category_direction == '-' ? 'text-red-500' : 'text-emerald-600' }}">
+                                            <td class="px-4 py-4 text-sm font-bold {{ $transaction->transaction_amount < 0 ? 'text-red-500' : 'text-emerald-600' }}">
                                                 {{ $transaction->category->category_direction }}{{ number_format(abs($transaction->transaction_amount), 0, ',', ' ') }} 
                                                 <span class="text-xs font-normal text-gray-700">{{ $transaction->currency->currency_sign }}</span>
                                             </td>
@@ -122,7 +122,7 @@
                                             <td class="px-4 py-4 text-sm text-gray-700">
                                                 {{ $transaction->subcategory?->subcategory_name ?? '-' }}
                                             </td>
-                                            <td class="px-4 py-4 text-sm text-gray-700 whitespace-nowrap">
+                                            <td class="px-4 py-4 text-sm text-gray-700">
                                                 {{ date('Y. m. d.', strtotime($transaction->transaction_date_completed)) }}
                                             </td>
                                             <td class="px-4 py-4 text-sm text-gray-700 text-sm">
