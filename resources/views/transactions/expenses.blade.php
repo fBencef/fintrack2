@@ -36,7 +36,7 @@
                     <div class="flex flex-wrap items-center gap-4 mb-6">
                         <!-- Add New Button -->
                         <button onclick="createTransaction()" 
-                            class="inline-flex items-center px-5 py-2.5 bg-green-700 hover:bg-green-600 text-white text-sm font-bold rounded transition-all shadow-sm hover:shadow-lg active:scale-95">
+                            class="inline-flex items-center px-5 py-2.5 bg-green-700 hover:bg-green-800 text-white text-sm font-bold rounded transition-all shadow-sm hover:shadow-lg active:scale-95">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                             </svg>
@@ -112,6 +112,7 @@
     </div>
 
 
+    <!-- Details / Edit modal -->
     <div id="transactionModal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
