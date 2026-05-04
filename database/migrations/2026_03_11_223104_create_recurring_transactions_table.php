@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users','user_id')->onDelete('cascade');
             $table->foreignId('currency_id')->constrained('currencies','currency_id')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories','category_id')->onDelete('cascade');
-            $table->foreignId('subcategory_id')->constrained('subcategories','subcategory_id')->onDelete('cascade');
+            $table->foreignId('subcategory_id')->constrained('subcategories','subcategory_id')->onDelete('cascade')->nullable();
             $table->foreignId('account_id')->constrained('accounts','account_id')->onDelete('cascade');
             $table->string('recurring_name');
             $table->string('recurring_description')->nullable();

@@ -29,14 +29,14 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold">Kategóriák</h3>
-                    <button onclick="openCreateCategoryModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button onclick="openCreateCategoryModal()" class="bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">
                         + Új kategória
                     </button>
                 </div>
 
                 <table class="w-full border-collapse">
                     <thead>
-                        <tr class="bg-gray-100 text-left">
+                        <tr class="bg-gray-100 text-center">
                             <th class="p-3">Név</th>
                             <th class="p-3">Típus</th>
                             <th class="p-3">Leírás</th>
@@ -64,12 +64,22 @@
                                 </td>
                                 <td class="p-3 text-sm text-gray-600">{{ $category->category_description ?? '-' }}</td>
                                 <td class="p-3 text-right space-x-2">
-                                    <button onclick="window.openSubModal({{ $category->category_id }}, '{{ $category->category_name }}')" class="text-blue-600 hover:underline text-sm font-medium">+ Alkategória</button>
-                                    <button onclick="window.openEditCategoryModal({{ json_encode($category) }})" class=" hover:underline text-sm font-medium">Szerkesztés</button>
-                                    <form action="{{ route('categories.destroy', $category->category_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törlöd?')">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:underline text-sm font-medium">Törlés</button>
-                                    </form>
+                                    <div class="flex justify-end items-center gap-2">
+                                        <button onclick="window.openSubModal({{ $category->category_id }}, '{{ $category->category_name }}')" class="text-green-700 hover:underline text-base font-medium">+ Alkategória</button>
+                                        <button onclick="window.openEditCategoryModal({{ json_encode($category) }})" class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-sm">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                        </button>
+                                        <form action="{{ route('categories.destroy', $category->category_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törlöd?')">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="text-red-700 hover:text-red-900 transition-colors p-2 hover:bg-rose-50 rounded-lg">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
 
@@ -82,12 +92,22 @@
                                     </td>
                                     <td class="p-2 text-xs text-gray-400 uppercase tracking-widest">Alkategória</td>
                                     <td class="p-2 text-sm text-gray-500">{{ $sub->subcategory_description ?? '-' }}</td>
-                                    <td class="p-2 text-right space-x-2">
-                                        <button onclick="window.openEditSubModal({{ json_encode($sub) }})" class="hover:underline text-xs font-medium">Szerkesztés</button>
-                                        <form action="{{ route('subcategories.destroy', $sub->subcategory_id) }}" method="POST" class="inline">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="text-red-400 hover:text-red-600 text-xs font-medium">Eltávolítás</button>
-                                        </form>
+                                    <td class="p-2 text-left space-x-2">
+                                        <div class="flex justify-end items-end">
+                                            <button onclick="window.openEditSubModal({{ json_encode($sub) }})" class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-sm">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                            </button>
+                                            <form action="{{ route('subcategories.destroy', $sub->subcategory_id) }}" method="POST" class="inline">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="text-red-700 hover:text-red-900 transition-colors p-2 hover:bg-rose-50 rounded-lg">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -104,32 +124,42 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold">Számlák</h3>
-                    <button onclick="window.openCreateAccountModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button onclick="window.openCreateAccountModal()" class="bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">
                         + Új számla
                     </button>
                 </div>
 
                 <table class="w-full border-collapse">
                     <thead>
-                        <tr class="bg-gray-100 text-left">
+                        <tr class="bg-gray-100 text-center">
                             <th class="p-3 w-1/2">Megnevezés</th>
                             <th class="p-3">Pénznem</th>
-                            <th class="p-3 text-right">Műveletek</th>
+                            <th class="p-3">Műveletek</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($accounts as $account)
                             <tr class="border-b border-gray-200 hover:bg-gray-50">
                                 <td class="p-3 font-semibold text-gray-800">{{ $account->account_name }}</td>
-                                <td class="p-3 text-gray-600">
+                                <td class="p-3 text-gray-800">
                                     {{ $account->currency->currency_name }} ({{ $account->currency->currency_sign }})
                                 </td>
                                 <td class="p-3 text-right space-x-2">
-                                    <button onclick="window.openEditAccountModal({{ json_encode($account) }})" class="hover:underline text-sm font-medium">Szerkesztés</button>
-                                    <form action="{{ route('accounts.destroy', $account->account_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törlöd ezt a számlát? Figyelem: A kapcsolódó tranzakciók is törlődnek!')">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:underline text-sm font-medium">Törlés</button>
-                                    </form>
+                                    <div class="flex justify-end items-end">
+                                        <button onclick="window.openEditAccountModal({{ json_encode($account) }})" class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-sm">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                        </button>
+                                        <form action="{{ route('accounts.destroy', $account->account_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törlöd ezt a számlát? Figyelem: A kapcsolódó tranzakciók is törlődnek!')">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="text-red-700 hover:text-red-900 transition-colors p-2 hover:bg-rose-50 rounded-lg">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -145,44 +175,58 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold">Pénznemek</h3>
-                    <button onclick="window.openCreateCurrencyModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button onclick="window.openCreateCurrencyModal()" class="bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">
                         + Új pénznem
                     </button>
                 </div>
 
                 <table class="w-full border-collapse">
                     <thead>
-                        <tr class="bg-gray-100 text-left">
+                        <tr class="bg-gray-100 text-center">
                             <th class="p-3">Név</th>
                             <th class="p-3">Rövidítés</th>
                             <th class="p-3">Jel</th>
-                            <th class="p-3 text-center">Alapértelmezett</th>
-                            <th class="p-3 text-right">Műveletek</th>
+                            <th class="p-3">Alapértelmezett</th>
+                            <th class="p-3">Műveletek</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($currencies as $currency)
-                            <tr class="bg-gray-50 border-b border-gray-200 font-semibold">
-                                <td class="p-3">{{ $currency->currency_name }}</td>
-                                <td class="p-3 font-mono">{{ $currency->currency_abbreviation }}</td>
-                                <td class="p-3 font-bold">{{ $currency->currency_sign }}</td>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <td class="p-3 font-semibold">{{ $currency->currency_name }}</td>
+                                <td class="p-3">{{ $currency->currency_abbreviation }}</td>
+                                <td class="p-3">{{ $currency->currency_sign }}</td>
                                 <td class="p-3 text-center">
                                     @if($currency->is_default_currency)
-                                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 font-bold">ALAPÉRTELMEZETT</span>
+                                        <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm bg-emerald-100 text-emerald-700 border border-blue-200">ALAPÉRTELMEZETT</span>
                                     @else
                                         <span class="text-gray-300">-</span>
                                     @endif
                                 </td>
                                 <td class="p-3 text-right space-x-2">
-                                    <button onclick="window.openEditCurrencyModal({{ json_encode($currency) }})" class="text-600 hover:underline text-sm font-medium">Szerkesztés</button>
-                                    @if(!$currency->is_default_currency)
-                                    <form action="{{ route('currencies.destroy', $currency->currency_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törlöd?')">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:underline text-sm font-medium">Törlés</button>
-                                    </form>
-                                    @else
-                                    <button type="submit" class="text-gray-600 text-sm font-medium">Törlés</button>
-                                    @endif
+                                    <div class="flex justify-end items-end">
+                                        <button onclick="window.openEditCurrencyModal({{ json_encode($currency) }})" class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-sm">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                        </button>
+                                        @if(!$currency->is_default_currency)
+                                        <form action="{{ route('currencies.destroy', $currency->currency_id) }}" method="POST" class="inline" onsubmit="return confirm('Biztosan törlöd?')">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="text-red-700 hover:text-red-900 transition-colors p-2 hover:bg-rose-50 rounded-lg">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                        @else
+                                        <button type="submit" class="text-gray-700 transition-colors p-2 rounded-lg">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -207,7 +251,7 @@
                         <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition">
                             <input type="checkbox" name="prefs[monthly_spending]" value="1" 
                                 {{ auth()->user()->prefers('monthly_spending') ? 'checked' : '' }} 
-                                class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                                class="rounded border-gray-300 !text-green-600 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500" style="accent-color: #15803d;">
                             <div class="ml-4">
                                 <span class="block font-medium text-gray-900">Havi költés</span>
                                 <span class="block text-xs text-gray-500">Az aktuális hónap összesített kiadásai.</span>
@@ -217,7 +261,7 @@
                         <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition">
                             <input type="checkbox" name="prefs[category_chart]" value="1" 
                                 {{ auth()->user()->prefers('category_chart') ? 'checked' : '' }} 
-                                class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                                class="rounded border-gray-300 !text-green-600 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500" style="accent-color: #15803d;">
                             <div class="ml-4">
                                 <span class="block font-medium text-gray-900">Kategória megoszlás</span>
                                 <span class="block text-xs text-gray-500">Grafikus kimutatás a kiadási kategóriákról.</span>
@@ -227,7 +271,7 @@
                         <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition">
                             <input type="checkbox" name="prefs[recent_transactions]" value="1" 
                                 {{ auth()->user()->prefers('recent_transactions') ? 'checked' : '' }} 
-                                class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                                class="rounded border-gray-300 !text-green-600 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500" style="accent-color: #15803d;">
                             <div class="ml-4">
                                 <span class="block font-medium text-gray-900">Legutóbbi tranzakciók</span>
                                 <span class="block text-xs text-gray-500">A legfrissebb pénzmozgások listája.</span>
@@ -236,7 +280,7 @@
                     </div>
 
                     <div class="mt-8 flex justify-end">
-                        <x-primary-button>Beállítások mentése</x-primary-button>
+                        <button class="inline-flex items-center px-5 py-2.5 bg-green-700 hover:bg-green-800 text-white text-xs font-bold rounded transition-all shadow-sm hover:shadow-lg active:scale-95 uppercase tracking-wider">Vezérlőpult mentése</button>
                     </div>
                 </form>
             </div>

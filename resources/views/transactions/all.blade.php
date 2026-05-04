@@ -26,8 +26,20 @@
 
     <div class="py-12">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="p-6 overflow-hidden bg-white shadow-sm sm:rounded-lg border border-gray-100">
                 
+            <!-- Action bar -->
+            <div class="flex flex-wrap items-center gap-4 mb-6 bg-white shadow-sm sm:rounded-lg border border-gray-100 p-2">
+                <!-- Add New Button -->
+                <button onclick="createTransaction()" 
+                    class="inline-flex items-center px-5 py-2.5 bg-green-700 hover:bg-green-800 text-white text-sm font-bold rounded transition-all shadow-sm hover:shadow-lg active:scale-95">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Új tranzakció
+                </button>
+            </div>
+
+            <div class="p-6 overflow-hidden bg-white shadow-sm sm:rounded-lg border border-gray-100">
                 <!-- Layout container -->
                 <div class="flex flex-col gap-8 md:flex-row items-start">
                     
@@ -94,7 +106,7 @@
                         <div class="overflow-x-auto border border-gray-100">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
-                                    <tr>
+                                    <tr class="bg-gray-100">
                                         <th class="px-4 py-3 text-center text-xs font-bold text-400 uppercase tracking-widest">#</th>
                                         <th class="px-4 py-3 text-center text-xs font-bold text-400 uppercase tracking-widest">Összeg</th>
                                         <th class="px-4 py-3 text-center text-xs font-bold text-400 uppercase tracking-widest">Kategória</th>

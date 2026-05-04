@@ -114,4 +114,14 @@ class RecurringTransactionController extends Controller
 
         return back()->with('success', 'Sikeres módosítás!');
     }
+
+    public function destroy(RecurringTransaction $recurring) {
+    if ($recurring->user_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $recurring->delete();
+
+    return back()->with('success', 'Ismétlődő tranzakció törölve.');
+}
 }

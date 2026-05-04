@@ -23,7 +23,22 @@
         </div>
     @endif
 
-    <div class="py-12">
+        <!-- Action bar -->
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4 pb-6 pt-12"> <!-- This matches the Selector exactly -->
+            <div class="bg-white shadow-sm sm:rounded-lg border border-gray-100 pt-2 pb-2 px-4"> <!-- The actual white box -->
+                <!-- Add New Button -->
+                <button onclick="createTransaction()" 
+                    class="inline-flex items-center px-5 py-2.5 bg-green-700 hover:bg-green-800 text-white text-sm font-bold rounded transition-all shadow-sm hover:shadow-lg active:scale-95">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Új tranzakció
+                </button>
+            </div>
+        </div>
+
+    <!--Dynamic dashboard widget part-->
+    <div class="py-7">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-dashboard-month-selector 
                         :selectedMonth="$selectedMonth" 
@@ -32,10 +47,6 @@
                         :isCurrentMonth="$isCurrentMonth" 
             />
         </div>
-    </div>
-
-    <!--Dynamic dashboard widget part-->
-    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
