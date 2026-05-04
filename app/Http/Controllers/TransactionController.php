@@ -205,10 +205,10 @@ class TransactionController extends Controller
         }
     
         // Fething data for / displaying edit form
-        $categories = Category::all();
+        $categories = Category::where('user_id', auth()->id())->get();
         $subcategories = Subcategory::where('category_id', $transaction->category_id)->get();
         $accounts = Account::where('user_id', auth()->id())->get();
-        $currencies = Currency::all();
+        $currencies = Currency::where('user_id', auth()->id())->get();
 
         return view('transactions.partials.edit', compact('transaction', 'categories', 'subcategories', 'accounts', 'currencies'));
     }

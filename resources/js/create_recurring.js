@@ -13,3 +13,20 @@ window.openCreateRecurringModal = function() {
 window.closeRecurringModal = function() {
     document.getElementById('recurringModal').style.display = 'none';
 }
+
+window.editRecurring = function(id) {
+    const modal = document.getElementById('editModal');
+    const body = document.getElementById('recurringEditBody');
+    
+    modal.style.display = 'block';
+
+    fetch(`/recurring/${id}/edit`)
+        .then(response => response.text())
+        .then(html => {
+            body.innerHTML = html;
+        })
+}
+
+window.closeEditModal = function() {
+    document.getElementById('editModal').style.display = 'none';
+}

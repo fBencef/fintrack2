@@ -145,4 +145,11 @@
         </div>
     </div>
 
+    <div id="editModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditModal()">&times;</span>
+            <div id="recurringEditBody"></div>
+        </div>
+    </div>
+
 </x-app-layout>

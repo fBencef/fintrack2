@@ -73,5 +73,45 @@ class RecurringTransactionController extends Controller
     $currencies = Currency::all();
 
     return view('recurring.partials.create', compact('categories', 'subcategories', 'accounts', 'currencies'));
-    } 
+    }
+
+    public function edit(RecurringTransaction $recurring) {
+        if ($recurring->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $categories = Category::where('user_id', auth()->id())->get();
+        $subcategories = Subcategory::where('category_id', $recurring->category_id)->get();
+        $accounts = Account::where('user_id', auth()->id())->get();
+        $currencies = Currency::where('user_id', auth()->id())->get();
+
+        return view('recurring.partials.edit', compact('recurring', 'categories', 'accounts', 'currencies', 'subcategories'));
+    }
+
+    public function update(Request $request, RecurringTransaction $recurring) {
+        if ($recurring->user_id !== auth()->id()) { abort(403); }
+
+        $validated = $request->validate([
+            'recurring_name' => 'required|string',
+            'recurring_description' => 'nullable|string|max:255',
+            'recurring_amount' => 'required|numeric',
+            'recurring_start_date' => 'nullable|date',
+            'recurring_end_date' => 'nullable|date',
+            'frequency_type' => 'required|in:daily,weekly,monthly,yearly',
+            'frequency_intervall' => 'required|integer|min:1',
+            'recurring_is_active' => 'boolean',
+            'recurring_is_prediction' => 'boolean',
+            'currency_id' => 'required|exists:currencies,currency_id',
+            'account_id' => 'required|exists:accounts,account_id',
+            'category_id' => 'required|exists:categories,category_id',
+            'subcategory_id' => 'nullable|exists:subcategories,subcategory_id',
+        ]);
+
+        $validated['recurring_is_active'] = $request->has('recurring_is_active');
+        $validated['recurring_is_prediction'] = $request->has('recurring_is_prediction');
+
+        $recurring->update($validated);
+
+        return back()->with('success', 'Sikeres módosítás!');
+    }
 }
