@@ -291,90 +291,26 @@
 
     <!-- MODALS -->
     <!-- Add categories -->
-    <div id="categoryModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
-        <div style="background:white; margin:10% auto; padding:20px; width:40%; border-radius:8px;">
-            <h3 class="text-xl font-bold mb-4">Új kategória</h3>
-            <form action="{{ route('categories.store') }}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <label class="block mb-1">Kategória neve</label>
-                    <input type="text" name="category_name" class="w-full border rounded p-2" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block mb-1">Típus</label>
-                    <select name="category_direction" class="w-full border rounded p-2">
-                        <option value="-">Kiadás (-)</option>
-                        <option value="+">Bevétel (+)</option>
-                        <option value="/">Kétirányú (+/-)</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label class="block mb-1">Leírás</label>
-                    <input type="text" name="category_description" class="w-full border rounded p-2">
-                </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="closeCategoryModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Mégse</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Mentés</button>
-                </div>
-            </form>
+    <div id="categoryModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCategoryModal()">&times;</span>
+            <div id="categoryModalBody"></div>
         </div>
     </div>
 
     <!-- Add subcategories -->
     <div id="subcategoryModal" class="modal-overlay" style="display:none;">
-    <div class="modal-content">
-        <span class="close-btn" onclick="window.closeSubModal()">&times;</span>
-        <h3 class="text-xl font-bold mb-4">Új alkategória</h3>
-        <p class="text-sm text-gray-600 mb-4">Fő kategória: <span id="sub_parent_name" class="font-bold"></span></p>
-        
-        <form action="{{ route('subcategories.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="category_id" id="parent_category_id">
-            
-            <div class="mb-4">
-                <x-input-label for="subcategory_name" value="Alkategória neve" />
-                <x-text-input id="subcategory_name" name="subcategory_name" class="block mt-1 w-full" required />
-                <br>
-                <x-input-label for="subcategory_description" value="Leírás" />
-                <x-text-input id="subcategory_description" name="subcategory_description" class="block mt-1 w-full" />
-            </div>
-
-            <div class="flex justify-end gap-2">
-                <x-secondary-button type="button" onclick="window.closeSubModal()">Mégse</x-secondary-button>
-                <x-primary-button type="submit">Mentés</x-primary-button>
-            </div>
-        </form>
-    </div>
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeSubModal()">&times;</span>
+            <div id="subcategoryModalBody"></div>
+        </div>
     </div>
 
     <!-- Edit categories -->
-    <div id="editCategoryModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
-        <div style="background:white; margin:10% auto; padding:20px; width:40%; border-radius:8px;">
-            <h3 class="text-xl font-bold mb-4">Kategória szerkesztése</h3>
-            <form id="editCategoryForm" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="mb-4">
-                    <label class="block mb-1">Kategória neve</label>
-                    <input type="text" name="category_name" id="edit_category_name" class="w-full border rounded p-2" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block mb-1">Típus</label>
-                    <select name="category_direction" id="edit_category_direction" class="w-full border rounded p-2">
-                        <option value="-">Kiadás (-)</option>
-                        <option value="+">Bevétel (+)</option>
-                        <option value="/">Kétirányú (+/-)</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label class="block mb-1">Leírás</label>
-                    <input type="text" name="category_description" id="edit_category_description" class="w-full border rounded p-2">
-                </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="closeEditCategoryModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Mégse</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Frissítés</button>
-                </div>
-            </form>
+    <div id="editCategoryModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditModal()">&times;</span>
+            <div id="categoryEditBody"></div>
         </div>
     </div>
 

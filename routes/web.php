@@ -55,10 +55,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // App Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
     Route::post('/settings/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::put('/settings/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
 
+    Route::get('/subcategories/create', [SubcategoryController::class, 'create'])->name('subcategories.create');
     Route::delete('/subcategories/{subcategory}', [SubcategoryController::class, 'destroy'])->name('subcategories.destroy');
     Route::post('/settings/subcategories', [SubcategoryController::class, 'store'])->name('subcategories.store');
     Route::put('/settings/subcategories/{subcategory}', [SubcategoryController::class, 'update'])->name('subcategories.update');

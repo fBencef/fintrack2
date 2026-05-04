@@ -48,4 +48,9 @@ class SubcategoryController extends Controller
         $subcategory->update($validated);
         return back()->with('success', 'Alkategória frissítve.');
     }
+
+    public function create()
+    {
+        return view('settings.partials.create_subcategory'); 
+    }
 }

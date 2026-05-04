@@ -50,4 +50,14 @@ class CategoryController extends Controller
         $category->update($validated);
         return back()->with('success', 'Kategória frissítve.');
     }
+
+    public function create()
+    {
+        return view('settings.partials.create_category'); 
+    }
+
+    public function edit(Category $category)
+    {
+        return view('settings.partials.edit_category', compact('category'));
+    }
 }
