@@ -44,6 +44,9 @@
 
                 <!-- Table Wrapper -->
                 <div class="overflow-x-auto border border-gray-100">
+
+                    <!--x-pending-queue :pendingTransactions="$recurrings"/-->
+
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr class="bg-gray-100">

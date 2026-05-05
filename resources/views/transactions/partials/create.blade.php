@@ -1,59 +1,97 @@
-<form action="{{ route('transactions.store') }}" method="POST">
+<form action="{{ route('transactions.store') }}" method="POST" class="p-1">
     @csrf
-    <h4>Új tranzakció</h4>
-    <hr>
+    <h3 class="text-xl font-bold text-gray-800">Új tranzakció</h3>
+    <hr class="my-4 border-gray-200">
 
-    <label>Dátum:</label>
-    <input type="date" name="transaction_date_completed" value="{{ date('Y-m-d') }}" required>
-    <br>
+    <div class="space-y-4">
+        <!-- Date and Amount -->
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Dátum:</label>
+                <input type="date" name="transaction_date_completed" value="{{ date('Y-m-d') }}" required
+                    class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Összeg:</label>
+                <input type="number" step="0.01" name="transaction_amount" placeholder="500 Ft" required
+                    class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
+            </div>
+        </div>
 
-    <label>Összeg:</label>
-    <input type="number" step="0.01" name="transaction_amount" required>
-    <br>
+        <!-- Category and Subcategory -->
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Kategória:</label>
+                <select name="category_id" id="modal_category_select" required
+                    class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
+                    <option value="">-- Válassz --</option>
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat->category_id }}">{{ $cat->category_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Alkategória:</label>
+                <select name="subcategory_id" id="modal_subcategory_select"
+                    class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
+                    <option value="">-- Nincs --</option>
+                </select>
+            </div>
+        </div>
 
-    <label>Kategória:</label>
-    <select name="category_id" id="modal_category_select" required>
-        <option value="">-- Válassz kategóriát --</option>
-        @foreach($categories as $cat)
-            <option value="{{ $cat->category_id }}">{{ $cat->category_name }}</option>
-        @endforeach
-    </select>
+        <!-- Currency and Account -->
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Pénznem:</label>
+                <select name="currency_id" id="modal_currency_select"
+                    class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
+                    @foreach($currencies as $currency)
+                        <option value="{{ $currency->currency_id }}">{{ $currency->currency_name }} ({{ $currency->currency_sign }})</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Számla:</label>
+                <select name="account_id" id="modal_account_select"
+                    class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
+                    @foreach($accounts as $account)
+                        <option value="{{ $account->account_id }}">{{ $account->account_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
 
-    <select name="subcategory_id" id="modal_subcategory_select">
-        <option value="">-- Nincs alkategória --</option>
-    </select>
-    <br>
+        <!-- Split Transaction -->
+        <div class="bg-gray-50 p-3 rounded-sm border border-gray-200">
+            <div class="flex items-center mb-3">
+                <input type="checkbox" name="is_split" id="is_split" value="1" 
+                    class="rounded border-gray-300 !text-green-600 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500" style="accent-color: #15803d;">
+                <label for="is_split" class="text-sm font-bold text-gray-700 cursor-pointer pl-1">Megosztott költség</label>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 mb-1">Saját rész összege:</label>
+                <input type="number" step="0.01" name="transaction_split_amount" placeholder="500 Ft"
+                    class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
+            </div>
+        </div>
 
-    <label>Pénznem:</label>
-    <select name="currency_id" id="modal_currency_select">
-        @foreach($currencies as $currency)
-            <option value="{{ $currency->currency_id }}">{{ $currency->currency_name }}</option>
-        @endforeach
-    </select>
-    <br>
+        <!-- Description -->
+        <div>
+            <label class="block text-sm font-bold text-gray-700 mb-1">Leírás:</label>
+            <textarea name="transaction_description" rows="2" placeholder="Adj meg leírást..."
+                class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1"></textarea>
+        </div>
+    </div>
 
-    <label>Számla:</label>
-    <select name="account_id" id="modal_account_select">
-        @foreach($accounts as $account)
-            <option value="{{ $account->account_id }}">{{ $account->account_name }}</option>
-        @endforeach
-    </select>
-    <br>
-
-    <label>Megosztott:</label>
-    <input type="checkbox" name="is_split" value="1">
-    <br>
-
-    <label>Saját rész:</label>
-    <input type="number" step="0.01" name="transaction_split_amount">
-    <br>
-
-    <label>Leírás:</label>
-    <textarea name="transaction_description" placeholder="Adj meg leírást..."></textarea>
-    <br>
-
-    <div style="margin-top: 20px;">
-        <button type="submit" class="btn-save">Mentés</button>
-        <button type="button" onclick="closeModal()">Mégse</button>
+    <!-- Buttons -->
+    <div class="mt-8 flex justify-end gap-3">
+        <button type="button" onclick="closeModal()" 
+            class="px-5 py-2.5 bg-gray-100 text-gray-600 text-sm font-bold rounded-sm hover:bg-gray-200 transition">
+            Mégse
+        </button>
+        <button type="submit" 
+            class="px-8 py-2.5 bg-green-700 hover:bg-green-800 text-white text-sm font-bold rounded-sm shadow-md transition active:scale-95">
+            Mentés
+        </button>
     </div>
 </form>

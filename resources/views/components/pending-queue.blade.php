@@ -1,3 +1,5 @@
+@props(['pendingTransactions'])
+
 <div class="mt-8 bg-white rounded-sm border border-amber-200 shadow-sm overflow-hidden">
     <!-- Header -->
     <div class="bg-amber-50 px-4 py-3 border-b border-amber-100 flex justify-between items-center">
@@ -11,7 +13,7 @@
         @forelse($pendingTransactions as $pending)
             <div class="p-4 hover:bg-gray-50 transition-colors flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
                 
-                <!-- Info Section -->
+                <!-- Info -->
                 <div class="flex-1 min-w-[200px]">
                     <div class="flex items-center gap-3 mb-1">
                         <span class="text-xs font-bold text-gray-400">{{ date('Y. m. d.', strtotime($pending->transaction_date_completed)) }}</span>
@@ -26,9 +28,9 @@
                     </div>
                 </div>
 
-                <!-- Actions Section -->
+                <!-- Actions -->
                 <div class="flex items-center gap-2">
-                    <!-- Approve Button -->
+                    <!-- Approve -->
                     <form action="{{ route('transactions.approve', $pending->transaction_id) }}" method="POST">
                         @csrf @method('PATCH')
                         <button type="submit" title="Jóváhagyás"
@@ -39,7 +41,7 @@
                         </button>
                     </form>
 
-                    <!-- Edit Button -->
+                    <!-- Edit -->
                     <button type="button" onclick="editTransaction({{ $pending->transaction_id }})" title="Szerkesztés"
                         class="w-10 h-10 flex items-center justify-center bg-blue-50 text-blue-600 rounded-sm hover:bg-blue-600 hover:text-white transition active:scale-95">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -47,7 +49,7 @@
                         </svg>
                     </button>
 
-                    <!-- Decline/Delete Button -->
+                    <!-- Decline -->
                     <form action="{{ route('transactions.destroy', $pending->transaction_id) }}" method="POST">
                         @csrf @method('DELETE')
                         <button type="submit" onclick="return confirm('Törlöd ezt a javaslatot?')" title="Elvetés"
@@ -67,12 +69,12 @@
     </div>
 </div>
 
-<!-- Modal Shell (Ensuring it matches your JS call) -->
+<!-- Modal Shell -->
 <div id="transactionModal" class="modal-overlay" style="display: none;">
     <div class="modal-content !max-w-lg">
         <span class="close-btn" onclick="closeModal()">&times;</span>
         <div id="modal-body" class="p-2">
-            <!-- Content loaded via AJAX -->
+            
         </div>
     </div>
 </div>
