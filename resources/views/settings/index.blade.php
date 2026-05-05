@@ -66,7 +66,7 @@
                                 <td class="p-3 text-right space-x-2">
                                     <div class="flex justify-end items-center gap-2">
                                         <button onclick="window.openSubModal({{ $category->category_id }}, '{{ $category->category_name }}')" class="text-green-700 hover:underline text-base font-medium">+ Alkategória</button>
-                                        <button onclick="window.openEditCategoryModal({{ json_encode($category) }})" class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-sm">
+                                        <button onclick="window.openEditCategoryModal({{ $category->category_id }})" class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-sm">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg>
@@ -94,7 +94,7 @@
                                     <td class="p-2 text-sm text-gray-500">{{ $sub->subcategory_description ?? '-' }}</td>
                                     <td class="p-2 text-left space-x-2">
                                         <div class="flex justify-end items-end">
-                                            <button onclick="window.openEditSubModal({{ json_encode($sub) }})" class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-sm">
+                                            <button onclick="window.openEditSubModal({{ $sub->subcategory_id }})" class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-sm">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg>
@@ -146,7 +146,7 @@
                                 </td>
                                 <td class="p-3 text-right space-x-2">
                                     <div class="flex justify-end items-end">
-                                        <button onclick="window.openEditAccountModal({{ json_encode($account) }})" class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-sm">
+                                        <button onclick="window.openEditAccountModal({{ $account->account_id }})" class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-sm">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg>
@@ -205,7 +205,7 @@
                                 </td>
                                 <td class="p-3 text-right space-x-2">
                                     <div class="flex justify-end items-end">
-                                        <button onclick="window.openEditCurrencyModal({{ json_encode($currency) }})" class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-sm">
+                                        <button onclick="window.openEditCurrencyModal({{ $currency->currency_id }})" class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-sm">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
@@ -309,154 +309,49 @@
     <!-- Edit categories -->
     <div id="editCategoryModal" class="modal-overlay" style="display:none;">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeEditModal()">&times;</span>
+            <span class="close-btn" onclick="closeEditCategoryModal()">&times;</span>
             <div id="categoryEditBody"></div>
         </div>
     </div>
 
     <!-- Edit subcategories -->
-    <div id="editSubcategoryModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
-        <div style="background:white; margin:10% auto; padding:20px; width:40%; border-radius:8px;">
-            <h3 class="text-xl font-bold mb-4">Alkategória szerkesztése</h3>
-            <form id="editSubcategoryForm" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="mb-4">
-                    <label class="block mb-1">Alkategória neve</label>
-                    <input type="text" name="subcategory_name" id="edit_subcategory_name" class="w-full border rounded p-2" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block mb-1">Leírás</label>
-                    <input type="text" name="subcategory_description" id="edit_subcategory_description" class="w-full border rounded p-2">
-                </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="closeEditSubModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Mégse</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Frissítés</button>
-                </div>
-            </form>
+    <div id="editSubcategoryModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditSubcategoryModal()">&times;</span>
+            <div id="subcategoryEditBody"></div>
         </div>
     </div>
 
     <!-- Add accounts -->
-    <div id="accountModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
-        <div style="background:white; margin:10% auto; padding:20px; width:35%; border-radius:8px;">
-            <h3 class="text-xl font-bold mb-4">Új számla</h3>
-            <form action="{{ route('accounts.store') }}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <label class="block mb-1">Megnevezés</label>
-                    <input type="text" name="account_name" class="w-full border rounded p-2" placeholder="pl. Készpénz, Revolut" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block mb-1">Pénznem</label>
-                    <select name="currency_id" class="w-full border rounded p-2">
-                        @foreach($currencies as $currency)
-                            <option value="{{ $currency->currency_id }}">{{ $currency->currency_name }} ({{ $currency->currency_sign }})</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="window.closeAccountModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Mégse</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Mentés</button>
-                </div>
-            </form>
+    <div id="accountModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAccountModal()">&times;</span>
+            <div id="accountModalBody"></div>
         </div>
     </div>
 
 
     <!-- Edit accounts -->
-    <div id="editAccountModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
-        <div style="background:white; margin:10% auto; padding:20px; width:35%; border-radius:8px;">
-            <h3 class="text-xl font-bold mb-4">Számla szerkesztése</h3>
-            
-            <form id="editAccountForm" method="POST">
-                @csrf
-                @method('PUT')
-                
-                <div class="mb-4">
-                    <label class="block mb-1 font-medium text-gray-700">Megnevezés</label>
-                    <input type="text" name="account_name" id="edit_account_name" class="w-full border rounded p-2 focus:ring focus:ring-blue-200 outline-none" required>
-                </div>
-
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="window.closeEditAccountModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">Mégse</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-yellow-700 transition">Frissítés</button>
-                </div>
-            </form>
+    <div id="editAccountModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditAccountModal()">&times;</span>
+            <div id="accountEditBody"></div>
         </div>
     </div>
 
     <!-- Add currency -->
-    <div id="currencyModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
-        <div style="background:white; margin:10% auto; padding:20px; width:35%; border-radius:8px;">
-            <h3 class="text-xl font-bold mb-4">Új pénznem</h3>
-            <form action="{{ route('currencies.store') }}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <label class="block mb-1">Név</label>
-                    <input type="text" name="currency_name" class="w-full border rounded p-2" required placeholder="pl. Magyar forint">
-                </div>
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block mb-1">Rövidítés</label>
-                        <input type="text" name="currency_abbreviation" class="w-full border rounded p-2" required placeholder="pl. HUF">
-                    </div>
-                    <div>
-                        <label class="block mb-1">Jel</label>
-                        <input type="text" name="currency_sign" class="w-full border rounded p-2" required placeholder="pl. Ft">
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" name="is_default_currency" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm">
-                        <span class="ml-2">Legyen ez az alapértelmezett</span>
-                    </label>
-                </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="window.closeCurrencyModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Mégse</button>
-                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">Mentés</button>
-                </div>
-            </form>
+    <div id="currencyModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCurrencyModal()">&times;</span>
+            <div id="currencyModalBody"></div>
         </div>
     </div>
 
     <!-- Edit currency -->
-    <div id="editCurrencyModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
-        <div style="background:white; margin:10% auto; padding:20px; width:35%; border-radius:8px;">
-            <h3 class="text-xl font-bold mb-4">Pénznem szerkesztése</h3>
-            
-            <form id="editCurrencyForm" method="POST">
-                @csrf
-                @method('PUT')
-                
-                <div class="mb-4">
-                    <label class="block mb-1">Pénznem neve</label>
-                    <input type="text" name="currency_name" id="edit_currency_name" class="w-full border rounded p-2 focus:ring focus:ring-indigo-200 outline-none" required>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block mb-1">Rövidítés (pl. EUR)</label>
-                        <input type="text" name="currency_abbreviation" id="edit_currency_abbreviation" class="w-full border rounded p-2 focus:ring focus:ring-indigo-200 outline-none" required>
-                    </div>
-                    <div>
-                        <label class="block mb-1">Jel (pl. €)</label>
-                        <input type="text" name="currency_sign" id="edit_currency_sign" class="w-full border rounded p-2 focus:ring focus:ring-indigo-200 outline-none" required>
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" name="is_default_currency" id="edit_is_default_currency" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-                        <span class="ml-2">Legyen ez az alapértelmezett</span>
-                    </label>
-                </div>
-
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="window.closeEditCurrencyModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">Mégse</button>
-                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">Frissítés</button>
-                </div>
-            </form>
+    <div id="editCurrencyModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditCurrencyModal()">&times;</span>
+            <div id="currencyEditBody"></div>
         </div>
     </div>
 

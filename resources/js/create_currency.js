@@ -1,23 +1,38 @@
 window.openCreateCurrencyModal = function() {
-    document.getElementById('currencyModal').style.display = 'block';
+    const modal = document.getElementById('currencyModal');
+    const body = document.getElementById('currencyModalBody');
+
+    modal.style.display = 'block';
+    body.innerHTML = '<p class="p-5 text-center text-gray-500 text-sm">Betöltés...</p>';
+
+    fetch('/currencies/create')
+        .then(response => response.text())
+        .then(html => {
+            body.innerHTML = html;
+        })
 }
 
 window.closeCurrencyModal = function() {
     document.getElementById('currencyModal').style.display = 'none';
 }
 
-window.openEditCurrencyModal = function(currency) {
-    // Fill text boxes
-    document.getElementById('edit_currency_name').value = currency.currency_name;
-    document.getElementById('edit_currency_abbreviation').value = currency.currency_abbreviation;
-    document.getElementById('edit_currency_sign').value = currency.currency_sign;
-    
-    // Fill checkbox
-    document.getElementById('edit_is_default_currency').checked = currency.is_default_currency == 1;
+window.openEditCurrencyModal = function(currencyId) {
+    const modal = document.getElementById('editCurrencyModal');
+    const body = document.getElementById('currencyEditBody');
 
-    document.getElementById('editCurrencyForm').action = `/settings/currencies/${currency.currency_id}`;
-    
-    document.getElementById('editCurrencyModal').style.display = 'block';
+    modal.style.display = 'block';
+    body.innerHTML = '<p class="p-5 text-center text-gray-500 text-sm">Betöltés...</p>';
+
+    fetch(`/currencies/${currencyId}/edit`)
+        .then(response => response.text())
+        .then(html => {
+            body.innerHTML = html;
+            
+            const form = document.getElementById('editCurrencyForm');
+            if (form) {
+                form.action = `settings/currencies/${currencyId}`;
+            }
+        });
 }
 
 window.closeEditCurrencyModal = function() {

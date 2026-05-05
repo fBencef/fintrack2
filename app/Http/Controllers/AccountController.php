@@ -42,4 +42,16 @@ class AccountController extends Controller
 
         return back()->with('success', 'Számla törölve.');
     }
+
+    public function create()
+    {
+        $currencies = \App\Models\Currency::all();
+
+        return view('settings.partials.create_account', compact('currencies'));
+    }
+
+    public function edit(Account $account)
+    {
+        return view('settings.partials.edit_account', compact('account'));
+    }
 }

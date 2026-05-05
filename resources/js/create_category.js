@@ -1,6 +1,7 @@
 window.openCreateCategoryModal = function() {
     const modal = document.getElementById('categoryModal');
     const body = document.getElementById('categoryModalBody');
+    
     modal.style.display = 'block';
     
     fetch('/categories/create')
@@ -37,7 +38,7 @@ window.closeSubModal = function() {
 }
 
 window.openEditCategoryModal = function(categoryId) {
-    const modal = document.getElementById('categoryModal'); // Or your specific edit modal ID
+    const modal = document.getElementById('categoryModal');
     const body = document.getElementById('categoryModalBody');
     const form = document.getElementById('editCategoryForm');
 
@@ -50,23 +51,36 @@ window.openEditCategoryModal = function(categoryId) {
 
             const editForm = document.getElementById('editCategoryForm');
             if (editForm) {
-                editForm.action = `/categories/${categoryId}`;
+                editForm.action = `settings/categories/${categoryId}`;
             }
         })
 }
 
 window.closeEditCategoryModal = function() {
-    document.getElementById('editCategoryModal').style.display = 'none';
+    const modal = document.getElementById('categoryModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
 }
 
-window.openEditSubModal = function(sub) {
-    document.getElementById('edit_subcategory_name').value = sub.subcategory_name;
-    document.getElementById('edit_subcategory_description').value = sub.subcategory_description || '';
-    
-    document.getElementById('editSubcategoryForm').action = `/settings/subcategories/${sub.subcategory_id}`;
-    document.getElementById('editSubcategoryModal').style.display = 'block';
+window.openEditSubModal = function(subId) {
+    const modal = document.getElementById('subcategoryModal');
+    const body = document.getElementById('subcategoryModalBody');
+
+    modal.style.display = 'block';
+
+    fetch(`/subcategories/${subId}/edit`)
+        .then(response => response.text())
+        .then(html => {
+            body.innerHTML = html;
+            
+            const form = document.getElementById('editSubcategoryForm');
+            if (form) {
+                form.action = `/settings/subcategories/${subId}`;
+            }
+        });
 }
 
 window.closeEditSubModal = function() {
-    document.getElementById('editSubcategoryModal').style.display = 'none';
+    document.getElementById('subcategoryModal').style.display = 'none';
 }

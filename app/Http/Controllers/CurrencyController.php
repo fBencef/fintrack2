@@ -60,4 +60,14 @@ class CurrencyController extends Controller
 
         return back()->with('success', 'Pénznem törölve.');
     }
+
+    public function create()
+    {
+        return view('settings.partials.create_currency');
+    }
+
+    public function edit(Currency $currency)
+    {
+        return view('settings.partials.edit_currency', compact('currency'));
+    }
 }

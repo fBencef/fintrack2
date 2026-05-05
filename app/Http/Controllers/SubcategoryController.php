@@ -53,4 +53,9 @@ class SubcategoryController extends Controller
     {
         return view('settings.partials.create_subcategory'); 
     }
+
+    public function edit(Subcategory $subcategory)
+    {
+        return view('settings.partials.edit_subcategory', compact('subcategory'));
+    }
 }

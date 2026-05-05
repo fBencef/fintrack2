@@ -9,7 +9,7 @@
         <!-- Name -->
         <div>
             <label for="edit_category_name" class="block text-sm font-bold text-gray-700 mb-1">Kategória neve:</label>
-            <input type="text" name="category_name" id="edit_category_name" required
+            <input type="text" name="category_name" id="edit_category_name" value="{{ $category->category_name }}" required
                 class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
         </div>
 
@@ -18,16 +18,16 @@
             <label for="edit_category_direction" class="block text-sm font-bold text-gray-700 mb-1">Típus:</label>
             <select name="category_direction" id="edit_category_direction"
                 class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
-                <option value="-">Kiadás (-)</option>
-                <option value="+">Bevétel (+)</option>
-                <option value="/">Kétirányú (+/-)</option>
+                <option value="-" {{ $category->category_direction == '-' ? 'selected' : '' }}>Kiadás (-)</option>
+                <option value="+" {{ $category->category_direction == '+' ? 'selected' : '' }}>Bevétel (+)</option>
+                <option value="/" {{ $category->category_direction == '/' ? 'selected' : '' }}>Kétirányú (+/-)</option>
             </select>
         </div>
 
         <!-- Description -->
         <div>
             <label for="edit_category_description" class="block text-sm font-bold text-gray-700 mb-1">Leírás:</label>
-            <input type="text" name="category_description" id="edit_category_description" placeholder="Opcionális leírás..."
+            <input type="text" name="category_description" id="edit_category_description" value="{{ $category->category_description }}" placeholder="Opcionális leírás..."
                 class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
         </div>
     </div>

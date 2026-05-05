@@ -52,28 +52,38 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // App Settings
+    // APP SETTINGS
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     
+    //Categories
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
     Route::post('/settings/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::put('/settings/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
 
+    //Subcategories
     Route::get('/subcategories/create', [SubcategoryController::class, 'create'])->name('subcategories.create');
     Route::delete('/subcategories/{subcategory}', [SubcategoryController::class, 'destroy'])->name('subcategories.destroy');
     Route::post('/settings/subcategories', [SubcategoryController::class, 'store'])->name('subcategories.store');
     Route::put('/settings/subcategories/{subcategory}', [SubcategoryController::class, 'update'])->name('subcategories.update');
+    Route::get('/subcategories/{subcategory}/edit', [SubcategoryController::class, 'edit'])->name('subcategories.edit');
 
+    //Accounts
+    Route::get('/accounts/create', [AccountController::class, 'create'])->name('accounts.create');
     Route::post('/settings/accounts', [AccountController::class, 'store'])->name('accounts.store');
-    Route::put('/settings/accounts/{account}', [AccountController::class, 'update'])->name('accounts.update');
     Route::delete('/settings/accounts/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
+    Route::get('/accounts/{account}/edit', [AccountController::class, 'edit'])->name('accounts.edit');
+    Route::put('/settings/accounts/{account}', [AccountController::class, 'update'])->name('accounts.update');
 
+    //Currencies
     Route::post('/settings/currencies', [CurrencyController::class, 'store'])->name('currencies.store');
     Route::put('/settings/currencies/{currency}', [CurrencyController::class, 'update'])->name('currencies.update');
     Route::delete('/settings/currencies/{currency}', [CurrencyController::class, 'destroy'])->name('currencies.destroy');
+    Route::get('/currencies/create', [CurrencyController::class, 'create'])->name('currencies.create');
+    Route::get('/currencies/{currency}/edit', [CurrencyController::class, 'edit'])->name('currencies.edit');
 
+    //Preferences (used only for dash elements now)
     Route::patch('/settings/preferences', [SettingsController::class, 'updatePreferences'])->name('settings.update_preferences');
 
     //Notifications
