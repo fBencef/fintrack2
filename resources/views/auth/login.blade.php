@@ -1,53 +1,59 @@
 <x-guest-layout>
-    <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
+
+    <div class="mb-8 text-center">
+        <h2 class="text-2xl font-bold text-gray-800">Üdv!</h2>
+        <p class="text-sm text-gray-600 mt-1">Jelentkezz be a fiókodba.</p>
+    </div>
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-input-label for="email" :value="__('Email cím')" class="block text-sm font-bold text-gray-700 mb-1" />
+            <x-text-input id="email" 
+                class="block mt-1 w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-2" 
+                type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2 text-xs font-bold text-red-600" />
         </div>
 
-        <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="__('Jelszó')" class="block text-sm font-bold text-gray-700 mb-1" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <x-text-input id="password" 
+                class="block mt-1 w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-2"
+                type="password"
+                name="password"
+                required autocomplete="current-password" />
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2 text-xs font-bold text-red-600" />
         </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+        <div class="flex items-center justify-between mt-4">
+            <label for="remember_me" class="inline-flex items-center cursor-pointer group">
+                <input id="remember_me" type="checkbox" 
+                    class="rounded border-gray-300 !text-green-600 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500" style="accent-color: #15803d;" 
+                    name="remember">
+                <span class="ms-2 text-sm text-gray-600 group-hover:text-gray-900 transition-colors">{{ __('Emlékezz rám') }}</span>
             </label>
+
+            @if (Route::has('password.request'))
+                <!--a class="text-sm text-green-700 hover:text-green-800 font-medium transition-colors" href="{{ route('password.request') }}">
+                    {{ __('Elfelejtett jelszó?') }}
+                </a-->
+            @endif
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
+        <div class="mt-6">
+            <x-primary-button class="w-full justify-center px-8 py-3 bg-green-700 hover:bg-green-800 text-white text-sm font-bold rounded-sm shadow-md transition active:scale-95">
+                {{ __('Bejelentkezés') }}
             </x-primary-button>
         </div>
 
-        <div class="mt-6 border-t border-gray-200 pt-6 text-center">
+        <div class="mt-8 border-t border-gray-100 pt-6 text-center">
             <p class="text-sm text-gray-600">
                 {{ __('Nincs még fiókod?') }}
-                <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500 transition ease-in-out duration-150">
+                <a href="{{ route('register') }}" class="text-green-700 hover:text-green-800 transition-colors ml-1">
                     {{ __('Regisztráció') }}
                 </a>
             </p>

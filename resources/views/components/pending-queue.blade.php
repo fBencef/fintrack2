@@ -1,9 +1,9 @@
 @props(['pendingTransactions'])
 
-<div class="mt-8 bg-white rounded-sm border border-amber-200 shadow-sm overflow-hidden">
+<div class="mt-8 bg-white rounded-sm border {{$pendingTransactions->count() > 0 ? 'border-amber-200' : 'border-gray-300' }} shadow-sm overflow-hidden">
     <!-- Header -->
-    <div class="bg-amber-50 px-4 py-3 border-b border-amber-100 flex justify-between items-center">
-        <h3 class="text-sm font-bold text-amber-800 uppercase tracking-wider">
+    <div class="{{$pendingTransactions->count() > 0 ? 'bg-amber-50 border-amber-100' : 'bg-white border-gray-200' }} px-4 py-3 border-b flex justify-between items-center">
+        <h3 class="text-sm font-bold {{$pendingTransactions->count() > 0 ? 'text-amber-800' : 'text-gray-700' }}  uppercase tracking-wider">
             Jóváhagyásra váró tételek ({{ $pendingTransactions->count() }})
         </h3>
     </div>
