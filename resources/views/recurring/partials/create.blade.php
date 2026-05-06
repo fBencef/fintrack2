@@ -88,7 +88,7 @@
             <!-- Intervall -->
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">Intervallum:</label>
-                <input type="number" name="frequency_intervall" placeholder="1" min="1" required
+                <input type="number" name="frequency_intervall" value="1" min="1" required
                     class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
             </div>
         </div>
