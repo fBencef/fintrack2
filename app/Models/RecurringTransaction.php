@@ -22,7 +22,7 @@ class RecurringTransaction extends Model
         'recurring_start_date',
         'recurring_end_date',
         'frequency_type',
-        'frequency_interval',
+        'frequency_intervall',
         'day_of_recurrence',
         'next_execution_date',
         'recurring_is_active',
