@@ -23,10 +23,27 @@
         </div>
 
         <!-- Amount and Account -->
+        <div class="mb-4">
+            <label class="block text-sm font-bold text-gray-700 mb-2">Tranzakció típusa</label>
+            <div class="flex gap-2">
+                <label class="flex-1 cursor-pointer">
+                    <input type="radio" name="type_toggle" value="expense" class="hidden peer" {{ $transaction->transaction_amount < 0 ? 'checked' : '' }}>
+                    <div class="text-center p-2 border border-gray-300 rounded-sm peer-checked:bg-red-50 peer-checked:border-red-600 peer-checked:text-red-700 transition font-bold text-sm">
+                        Kiadás (-)
+                    </div>
+                </label>
+                <label class="flex-1 cursor-pointer">
+                    <input type="radio" name="type_toggle" value="income" class="hidden peer" {{ $transaction->transaction_amount > 0 ? 'checked' : '' }}>
+                    <div class="text-center p-2 border border-gray-300 rounded-sm peer-checked:bg-emerald-50 peer-checked:border-emerald-600 peer-checked:text-emerald-700 transition font-bold text-sm">
+                        Bevétel (+)
+                    </div>
+                </label>
+            </div>
+        </div>
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">Összeg:</label>
-                <input type="number" step="0.01" name="transaction_amount" value="{{ $transaction->transaction_amount }}" required
+                <input type="number" step="0.01" name="transaction_amount" value="{{ abs($transaction->transaction_amount) }}" required
                     class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
             </div>
             <div>

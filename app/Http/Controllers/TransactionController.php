@@ -40,6 +40,16 @@ class TransactionController extends Controller
             }
         }
 
+        // Filter by Date From
+        if ($request->filled('date_from')) {
+            $query->whereDate('transaction_date_completed', '>=', $request->date_from);
+        }
+
+        // Filter by Date To
+        if ($request->filled('date_to')) {
+            $query->whereDate('transaction_date_completed', '<=', $request->date_to);
+        }
+
         // Get data
         $transactions = $query->orderBy('transaction_id', 'desc')->paginate(25);
 
@@ -223,7 +233,8 @@ class TransactionController extends Controller
             'currency_id' => 'required|exists:currencies,currency_id',
             'account_id' => 'required|exists:accounts,account_id',
             'is_split' => 'boolean',
-            'transaction_split_amount' => 'nullable|numeric'
+            'transaction_split_amount' => 'nullable|numeric',
+            'type_toggle' => 'required|in:expense,income'
         ]);
 
         // Manually ensure is_split false if missing from the request
@@ -238,6 +249,16 @@ class TransactionController extends Controller
         if ($transaction->transaction_status === 'pending') {
         $validated['transaction_status'] = 'confirmed';
         }
+
+        //Amount correction
+        // Force positive first
+        $rawAmount = abs($request->transaction_amount);
+
+        // If expense, change to negative
+        $finalAmount = ($request->type_toggle === 'expense') ? ($rawAmount * -1) : $rawAmount;
+
+        // Update validated
+        $validated['transaction_amount'] = $finalAmount;
 
         $transaction->update($validated);
 
@@ -270,7 +291,8 @@ class TransactionController extends Controller
             'currency_id' => 'required|exists:currencies,currency_id',
             'account_id' => 'required|exists:accounts,account_id',
             'is_split' => 'boolean',
-            'transaction_split_amount' => 'nullable|numeric'
+            'transaction_split_amount' => 'nullable|numeric',
+            'type_toggle' => 'required|in:expense,income'
         ]);
 
         //If no user is leggoed in, default to ID 1. (for development purposes)
@@ -283,6 +305,16 @@ class TransactionController extends Controller
         $validated['subcategory_id'] = $request->input('subcategory_id') ?: null;
         $validated['transaction_description'] = $request->input('transaction_description') ?: null;
         $validated['transaction_split_amount'] = $request->input('transaction_split_amount') ?: null;
+
+        //Amount correction
+        // Force positive first
+        $rawAmount = abs($request->transaction_amount);
+
+        // If expense, change to negative
+        $finalAmount = ($request->type_toggle === 'expense') ? ($rawAmount * -1) : $rawAmount;
+
+        // Update validated
+        $validated['transaction_amount'] = $finalAmount;
 
         Transaction::create($validated);
 

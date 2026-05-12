@@ -84,6 +84,20 @@
                                 </select>
                             </div>
 
+                            <!-- Date From -->
+                            <div>
+                                <label class="block mb-1 text-xs font-bold uppercase text-gray-500 tracking-wide">Dátumtól</label>
+                                <input type="date" name="date_from" value="{{ request('date_from') }}" 
+                                    class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-base p-1">
+                            </div>
+
+                            <!-- Date To -->
+                            <div>
+                                <label class="block mb-1 text-xs font-bold uppercase text-gray-500 tracking-wide">Dátumig</label>
+                                <input type="date" name="date_to" value="{{ request('date_to') }}" 
+                                    class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-base p-1">
+                            </div>
+
                             <button type="submit" 
                                 class="w-full py-2.5 px-4 bg-green-700 hover:bg-green-800 text-white font-bold rounded-sm shadow-sm transition-all active:scale-95">
                                 Szűrők alkalmazása

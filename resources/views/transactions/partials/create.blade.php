@@ -5,6 +5,23 @@
 
     <div class="space-y-4">
         <!-- Date and Amount -->
+        <div class="mb-4">
+            <label class="block text-sm font-bold text-gray-700 mb-2">Tranzakció típusa</label>
+            <div class="flex gap-2">
+                <label class="flex-1 cursor-pointer">
+                    <input type="radio" name="type_toggle" value="expense" class="hidden peer" checked>
+                    <div class="text-center p-2 border border-gray-300 rounded-sm peer-checked:bg-red-50 peer-checked:border-red-600 peer-checked:text-red-700 transition font-bold text-sm">
+                        Kiadás (-)
+                    </div>
+                </label>
+                <label class="flex-1 cursor-pointer">
+                    <input type="radio" name="type_toggle" value="income" class="hidden peer">
+                    <div class="text-center p-2 border border-gray-300 rounded-sm peer-checked:bg-emerald-50 peer-checked:border-emerald-600 peer-checked:text-emerald-700 transition font-bold text-sm">
+                        Bevétel (+)
+                    </div>
+                </label>
+            </div>
+        </div>
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">Dátum:</label>
