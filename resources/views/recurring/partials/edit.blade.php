@@ -79,9 +79,16 @@
         </div>
 
         <div class="grid grid-cols-2 gap-4">
+            <!-- Intervall -->
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Intervallum</label>
+                <input type="number" name="frequency_intervall" value="{{ $recurring->frequency_intervall }}" min="1" 
+                    class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1" required>
+            </div>
+
             <!-- Frequency -->
             <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1">Gyakoriság</label>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Gyakoriság típusa</label>
                 <select name="frequency_type" class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
                     <option value="daily" {{ $recurring->frequency_type == 'daily' ? 'selected' : '' }}>Napi</option>
                     <option value="weekly" {{ $recurring->frequency_type == 'weekly' ? 'selected' : '' }}>Heti</option>
@@ -90,12 +97,6 @@
                 </select>
             </div>
 
-            <!-- Intervall -->
-            <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1">Intervallum</label>
-                <input type="number" name="frequency_intervall" value="{{ $recurring->frequency_intervall }}" min="1" 
-                    class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1" required>
-            </div>
         </div>
 
         <div class="flex items-center gap-6 pt-2">
@@ -103,7 +104,7 @@
             <label class="inline-flex items-center text-sm text-gray-900 cursor-pointer">
                 <input type="checkbox" name="recurring_is_prediction" value="1" {{ $recurring->recurring_is_prediction ? 'checked' : '' }}
                     class="rounded border-gray-300 !text-green-600 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500" style="accent-color: #15803d;">
-                <span class="ml-2">Predikció</span>
+                <span class="ml-2">Várható</span>
             </label>
 
             <!-- Active -->

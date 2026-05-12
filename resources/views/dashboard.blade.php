@@ -74,6 +74,9 @@
                 <!--CATEGORIES-->
                 @if(auth()->user()->prefers('category_chart'))
                     <x-dashboard-card title="Költési kategóriák" id="category-chart">
+                        <p class="text-xl text-gray-500 mt-2 tracking-wide uppercase font-semibold">
+                            {{ $currentMonthLabel }}
+                        </p>
                         <x-category-chart :data="$spendingCategories" />
                     </x-dashboard-card>
                 @endif

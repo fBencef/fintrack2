@@ -52,7 +52,7 @@
                     <!-- Decline -->
                     <form action="{{ route('transactions.destroy', $pending->transaction_id) }}" method="POST">
                         @csrf @method('DELETE')
-                        <button type="submit" onclick="return confirm('Törlöd ezt a javaslatot?')" title="Elvetés"
+                        <button type="submit" onclick="return confirm('Elutasítod ezt a tranzakciót?')" title="Elvetés"
                             class="w-10 h-10 flex items-center justify-center bg-red-50 text-red-600 rounded-sm hover:bg-red-700 hover:text-white transition active:scale-95">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

@@ -108,7 +108,7 @@
                                     <td class="px-6 py-4 text-center">
                                         @if($recurring->recurring_is_prediction)
                                             <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm bg-amber-100 text-amber-700 border border-amber-200">
-                                                Predikció
+                                                Várható
                                             </span>
                                         @else
                                             <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm bg-emerald-100 text-emerald-700 border border-blue-200">
