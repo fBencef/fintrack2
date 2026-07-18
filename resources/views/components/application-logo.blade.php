@@ -1,6 +1,6 @@
 <svg viewBox="0 0 240 60" xmlns="http://www.w3.org/2000/svg" {{ $attributes }}>
-    <!-- Grouped elements to center them vertically and horizontally within a tighter box -->
-    <g transform="translate(5, 0)">
+    <!-- Grouped elements translated to center them perfectly within the 240x60 viewBox -->
+    <g transform="translate(39, 0)">
         <!-- Icon/Symbol Part -->
         <rect x="0" y="25" width="8" height="15" rx="1.5" fill="#15803d" />
         <rect x="12" y="15" width="8" height="25" rx="1.5" fill="#16a34a" />
@@ -9,11 +9,6 @@
         <!-- Text Part -->
         <text x="40" y="42" font-family="sans-serif" font-weight="900" font-size="32" letter-spacing="-1">
             <tspan fill="#15803d">Fin</tspan><tspan fill="#1f2937">Track</tspan>
-        </text>
-        
-        <!-- ÓE-NIK Index -->
-        <text x="182" y="22" font-family="sans-serif" font-weight="700" font-size="12" fill="#6b7280">
-            ÓE-NIK
         </text>
     </g>
 </svg>
