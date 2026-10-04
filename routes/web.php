@@ -26,7 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Recurring transactions
     Route::resource('recurring', RecurringTransactionController::class);
     //Route::get('/recurring/{id}', [RecurringTransactionController::class, 'show'])->name('recurring.show');
-    Route::put('/recurring/{id}', [RecurringTransactionController::class, 'update'])->name('recurring.update');
+    //Route::put('/recurring/{id}', [RecurringTransactionController::class, 'update'])->name('recurring.update');
     Route::delete('/recurring/{recurring}', [RecurringTransactionController::class, 'destroy'])->name('recurring.destroy');
 
     // Filtered transaction views
