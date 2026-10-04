@@ -31,11 +31,16 @@ jobs:
             exit 1
           fi
 
-          # 4. Spin up containers
+          # 4. Spin up the FrankenPHP container
           docker compose -f docker-compose.prod.yml up -d --build
 
-          # 5. Production optimisations & migrations
-          docker exec fintrack_prod_web composer install --no-dev --optimize-autoloader --no-interaction
+          # 5. Run Composer install using official Composer Docker image
+          docker run --rm \
+            -v "$HOME/fintrack:/app" \
+            -w /app \
+            composer:latest install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
+
+          # 6. Production optimisations & migrations inside FrankenPHP
           docker exec fintrack_prod_web php artisan config:cache
           docker exec fintrack_prod_web php artisan route:cache
           docker exec fintrack_prod_web php artisan view:cache
