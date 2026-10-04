@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Deploy application
         run: |
-          cd ~/fintrack-production || exit 1
+          cd ~/fintrack || exit 1
           git fetch origin
           git checkout release
           git reset --hard origin/release
