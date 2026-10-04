@@ -7,55 +7,22 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Deploy application
+        run: |
+          cd ~/fintrack-production || exit 1
+          git fetch origin
+          git checkout release
+          git reset --hard origin/release
 
-      - name: Connect to Tailscale
-        uses: tailscale/github-action@v2
-        with:
-            oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-            oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-            tags: tag:prod
+          # Build and start container
+          docker compose -f docker-compose.prod.yml up -d --build
 
-      - name: Deploy to Home Server via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            # Navigate to production deployment directory
-            cd ~/fintrack || mkdir -p ~/fintrack && cd ~/fintrack
-
-            # If the repository isn't cloned on the host yet, initialize it
-            if [ ! -d ".git" ]; then
-              git clone https://github.com/${{ github.repository }}.git .
-            fi
-
-            # Fetch latest release branch code
-            git fetch origin
-            git checkout release
-            git reset --hard origin/release
-
-            # Inject the production environment variables (using server's local template)
-            if [ ! -f ".env" ]; then
-              cp .env.example .env
-              echo "Please configure the production .env file on the host machine before proceeding."
-              exit 1
-            fi
-
-            # Start the containers or update configuration definitions
-            docker compose -f docker-compose.prod.yml up -d --build
-
-            # Execute production optimization commands inside the running web container
-            docker exec fintrack_prod_web composer install --no-dev --optimize-autoloader --no-interaction
-            docker exec fintrack_prod_web php artisan config:cache
-            docker exec fintrack_prod_web php artisan route:cache
-            docker exec fintrack_prod_web php artisan view:cache
-            
-            # Safely run database migrations against your 3rd party host
-            docker exec fintrack_prod_web php artisan migrate --force
+          # Run optimizations & migrations inside container
+          docker exec fintrack_prod_web composer install --no-dev --optimize-autoloader --no-interaction
+          docker exec fintrack_prod_web php artisan config:cache
+          docker exec fintrack_prod_web php artisan route:cache
+          docker exec fintrack_prod_web php artisan view:cache
+          docker exec fintrack_prod_web php artisan migrate --force
