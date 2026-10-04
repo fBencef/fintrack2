@@ -12,15 +12,29 @@ jobs:
     steps:
       - name: Deploy application
         run: |
-          cd ~/fintrack || exit 1
-          git fetch origin
+          # 1. Ensure directory exists and has the git repository
+          if [ ! -d "$HOME/fintrack/.git" ]; then
+            mkdir -p "$HOME/fintrack"
+            git clone -b release https://github.com/fBencef/fintrack2.git "$HOME/fintrack"
+          fi
+
+          cd "$HOME/fintrack" || exit 1
+
+          # 2. Pull the latest release code
+          git fetch origin release
           git checkout release
           git reset --hard origin/release
 
-          # Build and start container
+          # 3. Ensure the production compose file and .env exist
+          if [ ! -f ".env" ]; then
+            echo "Error: .env file missing in $HOME/fintrack!"
+            exit 1
+          fi
+
+          # 4. Spin up containers
           docker compose -f docker-compose.prod.yml up -d --build
 
-          # Run optimizations & migrations inside container
+          # 5. Production optimisations & migrations
           docker exec fintrack_prod_web composer install --no-dev --optimize-autoloader --no-interaction
           docker exec fintrack_prod_web php artisan config:cache
           docker exec fintrack_prod_web php artisan route:cache
