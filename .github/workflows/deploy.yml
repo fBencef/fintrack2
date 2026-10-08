@@ -40,7 +40,13 @@ jobs:
             -w /app \
             composer:latest install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
-          # 6. Production optimisations & migrations inside FrankenPHP
+          # 6. Build production frontend assets (Tailwind / Vite)
+          docker run --rm \
+            -v "$HOME/fintrack:/app" \
+            -w /app \
+            node:20-alpine sh -c "npm ci && npm run build"
+
+          # 7. Production optimisations & migrations inside FrankenPHP
           docker exec fintrack_prod_web php artisan config:cache
           docker exec fintrack_prod_web php artisan route:cache
           docker exec fintrack_prod_web php artisan view:cache
