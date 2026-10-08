@@ -1,18 +1,16 @@
-version: "3.9"
-
 services:
-  # Unified Laravel application runner (FrankenPHP)
   web:
-    image: dunglas/frankenphp:1.1-php8.2
     container_name: fintrack_prod_web
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
     restart: unless-stopped
     ports:
       - "8080:80"
+    environment:
+      SERVER_NAME: ":80"
+      APP_RUNTIME: "Runtime\\FrankenPhpSymfony\\Runtime"
     volumes:
       - ./:/app
       - ./storage:/app/storage
       - ./bootstrap/cache:/app/bootstrap/cache
-    environment:
-      - APP_ENV=production
-      - APP_DEBUG=false
-      - ENTRYPOINT_RUN_MIGRATIONS=0
