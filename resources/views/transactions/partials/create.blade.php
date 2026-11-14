@@ -4,7 +4,7 @@
     <hr class="my-4 border-gray-200">
 
     <div class="space-y-4">
-        <!-- Date and Amount -->
+        <!-- Amount -->
         <div class="mb-4">
             <label class="block text-sm font-bold text-gray-700 mb-2">Tranzakció típusa</label>
             <div class="flex gap-2">
@@ -22,16 +22,31 @@
                 </label>
             </div>
         </div>
-        <div class="grid grid-cols-2 gap-4">
-            <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1">Dátum:</label>
-                <input type="date" name="transaction_date_completed" value="{{ date('Y-m-d') }}" required
-                    class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
-            </div>
+        <!-- Date -->
+        <div class="mb-4">
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">Összeg:</label>
-                <input type="number" step="0.01" name="transaction_amount" placeholder="500 Ft" required
+                <input type="number" step="1" name="transaction_amount" placeholder="500 Ft" required
                     class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
+            </div>
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-bold text-gray-700 mb-1">Dátum:</label>
+            <div class="mb-4 flex gap-1">
+                <input id="transaction_date_input" type="date" name="transaction_date_completed" value="{{ date('Y-m-d') }}" required
+                class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
+                <button type="button" onclick="setDateToday()" 
+                    class="text-center p-2 border border-gray-300 rounded-sm font-bold text-sm hover:bg-gray-200 transition">
+                    Ma
+                </button>
+                <button type="button" onclick="setDateTodayMinus1()" 
+                    class="whitespace-nowrap text-center p-2 border border-gray-300 rounded-sm font-bold text-sm hover:bg-gray-200 transition">
+                    -1 nap
+                </button>
+                <button type="button" onclick="setDateTodayMinus2()" 
+                    class="whitespace-nowrap text-center p-2 border border-gray-300 rounded-sm font-bold text-sm hover:bg-gray-200 transition">
+                    -2 nap
+                </button>
             </div>
         </div>
 
