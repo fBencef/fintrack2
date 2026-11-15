@@ -108,7 +108,7 @@
                                     <td class="px-6 py-4 text-center">
                                         @if($recurring->recurring_is_prediction)
                                             <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm bg-amber-100 text-amber-700 border border-amber-200">
-                                                Várható
+                                                Becslés
                                             </span>
                                         @else
                                             <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm bg-emerald-100 text-emerald-700 border border-blue-200">
@@ -121,7 +121,7 @@
                                     <td class="px-6 py-4 text-center text-sm font-medium ">
                                         <div class="flex justify-center items-center">
                                             <!-- Complete TODO: implement one recurring completion logic.-->
-                                            <button onclick="editRecurring({{ $recurring->recurring_id }} )"
+                                            <button disabled onclick="editRecurring({{ $recurring->recurring_id }} )"
                                                 class="text-gray-400 hover:text-green-800 transition-colors p-2 hover:bg-indigo-50 rounded-lg">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />

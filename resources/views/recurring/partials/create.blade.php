@@ -100,7 +100,7 @@
             <label class="inline-flex items-center text-sm text-gray-900 cursor-pointer">
                 <input type="checkbox" name="recurring_is_prediction" value="1"
                     class="rounded border-gray-300 !text-green-600 shadow-sm focus:border-green-500 focus:ring focus:ring-green-500" style="accent-color: #15803d;">
-                <span class="ml-2 font-bold text-gray-700">Várható</span>
+                <span class="ml-2 font-bold text-gray-700">Becslés</span>
             </label>
 
             <!-- Active -->
