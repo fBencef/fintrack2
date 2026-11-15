@@ -17,7 +17,7 @@
 
             <div>
                 <span class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Összeg</span>
-                <span class="text-lg font-bold {{ $transaction->category->category_direction == '-' ? 'text-red-600' : 'text-green-600' }}">
+                <span class="text-lg font-bold {{ $transaction->transaction_amount < 0 ? 'text-red-600' : 'text-green-600' }}">
                     {{ $transaction->transaction_amount > 0 ? '+' : '' }}{{ number_format($transaction->transaction_amount, 0, ',', ' ') }} {{ $transaction->currency->currency_sign }}
                 </span>
             </div>

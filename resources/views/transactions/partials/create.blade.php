@@ -22,30 +22,30 @@
                 </label>
             </div>
         </div>
-        <!-- Date -->
         <div class="mb-4">
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">Összeg:</label>
-                <input type="number" step="1" name="transaction_amount" placeholder="500 Ft" required
+                <input autofocus type="number" step="1" name="transaction_amount" placeholder="500 Ft" required
                     class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
             </div>
         </div>
+        <!-- Date -->
         <div class="mb-4">
             <label class="block text-sm font-bold text-gray-700 mb-1">Dátum:</label>
             <div class="mb-4 flex gap-1">
                 <input id="transaction_date_input" type="date" name="transaction_date_completed" value="{{ date('Y-m-d') }}" required
                 class="w-full rounded-sm border-gray-300 focus:border-green-600 focus:ring-2 focus:ring-green-600 outline-none shadow-sm text-sm p-1">
-                <button type="button" onclick="setDateToday()" 
+                <button type="button" onclick="setInputDate(0)" 
                     class="text-center p-2 border border-gray-300 rounded-sm font-bold text-sm hover:bg-gray-200 transition">
                     Ma
                 </button>
-                <button type="button" onclick="setDateTodayMinus1()" 
+                <button type="button" onclick="setInputDate(-1)" 
                     class="whitespace-nowrap text-center p-2 border border-gray-300 rounded-sm font-bold text-sm hover:bg-gray-200 transition">
-                    -1 nap
+                    Tegnap
                 </button>
-                <button type="button" onclick="setDateTodayMinus2()" 
+                <button type="button" onclick="setInputDate(-2)" 
                     class="whitespace-nowrap text-center p-2 border border-gray-300 rounded-sm font-bold text-sm hover:bg-gray-200 transition">
-                    -2 nap
+                    Tegnapelőtt
                 </button>
             </div>
         </div>

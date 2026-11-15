@@ -38,3 +38,13 @@ window.setDateTodayMinus2 = function() {
 
     input_field.value = formattedYesterday_2;
 }
+
+window.setInputDate = function(diffDays) {
+    const input_field = document.getElementById('transaction_date_input');
+    const today = new Date();
+
+    today.setDate(today.getDate() + diffDays); // Subtract the number of days
+    const formattedDate = today.toISOString().split('T')[0];
+
+    input_field.value = formattedDate;
+}
